@@ -1,0 +1,1151 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{fancyhdr}
+\usepackage{lipsum} % for generating dummy text, you can remove this line in your actual document
+\usepackage[margin=1in, bottom=1.5in]{geometry} % Adjust bottom margin as needed
+\usepackage{thmtools}
+\usepackage{listings}
+\usepackage{hyperref}
+
+% Page style settings
+\pagestyle{fancy}
+\fancyhf{} % Clear header and footer
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead[C]{\textbf{\large 1A - Mechanics}}
+\fancyfoot[C]{\thepage}
+
+% Macros for convenience
+\newcommand{\bbR}{\mathbb{R}} % Example: Real numbers
+% Add more macros as needed
+
+% Define theorems, propositions, definitions, etc. using thmtools
+\declaretheoremstyle[
+  spaceabove=6pt,
+  spacebelow=6pt,
+  headfont=\bfseries,
+  notefont=\normalfont,
+  bodyfont=\normalfont,
+  headpunct={},
+  postheadspace=1em,
+  qed=,
+]{mystyle}
+
+\declaretheorem[
+  style=mystyle,
+  name=Theorem,
+  within=section,
+]{theorem}
+
+\declaretheorem[
+  style=mystyle,
+  name=Proposition,
+  within=section,
+]{proposition}
+
+\declaretheorem[
+  style=mystyle,
+  name=Definition,
+  within=section,
+]{definition}
+
+\declaretheorem[
+  style=mystyle,
+  name=Example,
+  within=section,
+]{example}
+
+\begin{document}
+
+\title{Engineering Tripos Part IA - Mechanics}
+\author{Morărescu Mihnea-Theodor}
+\date{\today}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+We begin the notes by stating Newton's laws of motion.
+
+\begin{definition}
+    A particle is a mathematical idealisation of an object. It represents an object of insignificant size, and it can be regarded as a point. It has a mass $m > 0$, and an electric charge $q$.
+\end{definition}
+
+\begin{theorem}[Newton's First Law]
+    When all external influences on a particle are removed, the particle moves with constant velocity. Note that this velocity may be null, in which case the particle remains at rest.
+\end{theorem}
+
+\begin{theorem}[Newton's Second Law]
+    When a net external force $\textbf{F}$ acts on a particle of mass $m$, the particle moves with an instantaneous acceleration $a$, given by $\textbf{F} = m\textbf{a}$.
+\end{theorem}
+
+\begin{theorem}[Newton's Third Law]
+    When two particles exert forces upon each other, these forces are equal in magnitude, opposite to each other, and parallel to the straight line joining the two particles.
+\end{theorem}
+
+These are all the fundamental laws governing Classical Mechanics. We will now use these three principles to derive the entire content of Part IA Mechanics.
+
+\newpage
+
+\section{Coordinate systems}
+
+In Mechanics, everything depends on being able to represent position, velocity and acceleration. In doing so, we will be using vector algebra studied in IA Mathematics. More generally, in Mechanics IB, we will utilise Vector Calculus to derive further principles. To fully describe the motion of an object, we need to know its position vector, i.e. $\textbf{r}$. 
+
+\subsection{Frames of reference}
+
+\begin{definition}[Frame of reference]
+    A frame of reference is a choice of coordinate system for \textbf{r}.
+\end{definition}
+
+However, we cannot easily choose any system of axes as a frame of reference, because Newton's laws might not be valid in the chosen system.
+
+\begin{definition}[Inertial frame of reference]
+    A frame of reference is called inertial if Newton's Laws can be applied. Furthermore, this essentially means that the reference frame itself has no acceleration (or no angular velocity).
+\end{definition}
+
+We notice that philosophically, the Earth is not an inertial frame of reference by the above definition, since it is rotating. However, the rotation's effects are so small that they can be neglected. Furthermore, we could also say that a frame of reference is inertial if there are no force that depend on the mass of the object, besides the weight due to gravity itself.
+
+\begin{definition}[Non-inertial frame of reference]
+    A frame of reference is called non-inertial if it is not inertial.
+\end{definition}
+
+\begin{example}
+    Consider an aeroplane rotating above an airport. If we decide to choose the ground control as a frame of reference, it would be inertial, as it is stationary. However, if we would have chosen it to be fixed to the aeroplane, it would be non-inertial as it would be rotating, contradicting our above definition.
+\end{example}
+
+\subsection{Coordinate systems}
+
+We will now move our attention to multiple coordinate systems. We need to always think about what is best for the problem we wish to solve, as every choice has its flaws. For instance, although Cartesian coordinates are the easiest ones to think about, they generally provide us with messy expressions. Moreover, a problem might be easier to solve in Polar or Intrinsic than Cartesian.
+
+\begin{definition}[Cartesian coordinates]
+    A point can be represented in Cartesian coordinates as $(x, y, z)$. Therefore, $\mathbf{r} = x\mathbf{i} + y\mathbf{j} + z\mathbf{k}$, where $\mathbf{i, j, k}$ are the unit vectors of our system.
+\end{definition}
+
+\begin{definition}[Cylindrical polar coordinates]
+A point can be represented in cylindrical polar coordinates as $(\rho, \theta, z)$, where $\rho$ and $\theta$ denote the length and the angle respectively in the $xOy$ plane, and $z$ represents the height. Therefore, $\mathbf{r} = \rho \mathbf{e}_{\rho} + z \mathbf{k}$. Note that the unit vectors are now $\mathbf{e}_{\rho}, \mathbf{e}_{\theta}, \mathbf{k}$, and $\mathbf{e}_{\rho}$ and $\mathbf{e}_{\theta}$ are not constant as in Cartesian coordinates - they are orthogonal rotating unit vectors.
+\end{definition}
+
+\begin{definition}[Spherical polar coordinates]
+    A point can be represented in spherical polar coordinates as $(r, \theta, \psi)$, by first rotating by $\psi$ in the $xOy$ plane, translating by a distance of $r$ along the line we created, and rotating perpendicularly upwards by $\theta$. Therefore, the position vector of any point in spherical coordinates is given by $\mathbf{r} = r\mathbf{e_r}$, and note that $\mathbf{e_r, e_{\theta}, e_{\psi}}$ are all orthogonal rotating unit vectors.
+\end{definition}
+
+\begin{definition}[Intrinsic coordinates]
+    A point can be represented in two dimensional space by intrinsic coordinates as the pair $(s, \psi)$. The $s$ coordinate defines the distance along a pre-specified path (contour), while $\psi$ is the instantaneous angle of the path with respect to a fixed reference. The downside of this approach is that there is no general way of expressing the position vector of a particle, however, the velocity is given by $\mathbf{v} = \dot{s}\mathbf{e_t}$. The unit vectors of this system are $\mathbf{e_t, e_n}$ and they are mutually orthogonal.
+\end{definition}
+
+\newpage
+
+\section{Velocity and acceleration}
+
+Consider a particle moving along a path, with instantaneous position vector $\mathbf{r}$. The average velocity of a particle is defined as the change of position (otherwise known as displacement) divided by the time interval, i.e. $\Delta \mathbf{v} = \frac{\Delta \mathbf{r}}{\Delta t}$. However, this is not particularly useful for most applications.
+
+\begin{definition}[Instantaneous velocity]
+    For a particle with position vector \textbf{r}, its instantaneous velocity is defined as:
+    \[ \mathbf{v} = \lim_{\Delta t \to 0} \frac{\mathbf{r}(t + \Delta t) - \mathbf{r}(t)}{\Delta t} = \frac{d\mathbf{r}}{dt} = \dot{\mathbf{r}}\] 
+\end{definition}
+
+\begin{definition}[Instantaneous acceleration]
+    For a particle with position vector \textbf{r}, its instantaneous acceleration is defined as:
+    \[ \mathbf{a} = \lim_{\Delta t \to 0} \frac{\mathbf{v}(t + \Delta t) - \mathbf{v}(t)}{\Delta t} = \frac{d\mathbf{v}}{dt} = \frac{d^2\mathbf{r}}{dt^2} = \mathbf{\dot{v}} = \mathbf{\Ddot{r}}\]
+\end{definition}
+
+As intuition, a particle's velocity defines its instantaneous rate of change (derivative) in position. Its acceleration defines its instantaneous rate of change in velocity (second derivative). Note that to express velocity and acceleration, \textbf{r} must be continuous - if not, we must resort to numerical differentiation which will be discussed later. For the following discussion, consider a particle whose motion is described by a continuous instantaneous position vector $\mathbf{r}$.
+
+\subsection{Cartesian coordinates}
+
+In Cartesian coordinates, $\mathbf{r} = x\mathbf{i} + y\mathbf{j} + z\mathbf{k}$, where $x = x(t), y = y(t), z = z(t)$ are continuous functions and indefinitely differentiable. Hence, the velocity is:
+
+\[ \mathbf{\dot{r}} = \dot{x}\mathbf{i} + \dot{y}\mathbf{j} + \dot{z}\mathbf{k}\]
+
+Furthermore, the acceleration becomes:
+
+\[ \mathbf{\Ddot{r}} = \Ddot{x}\mathbf{i} + \Ddot{y}\mathbf{j} + \Ddot{z}\mathbf{k} \]
+
+\begin{example}[Circular motion]
+    Consider a particle moving on a disk of center $O$ and radius $R$. Therefore:
+
+    \[ \mathbf{r} = R\sin{\theta}\mathbf{i} + R\cos{\theta}\mathbf{j} \]
+
+    Notice that the angle $\theta$ is a function of time, i.e. $\theta = \theta(t)$. Hence:
+
+    \[ \mathbf{\dot{r}} = R\cos{\theta}\dot{\theta}\mathbf{i} - R\sin{\theta}\dot{\theta}\mathbf{j} = R\dot{\theta}\left(\cos{\theta}\mathbf{i} - \sin{\theta}\mathbf{j}\right) \]
+
+    From the above, we can spot that $|\mathbf{\dot{r}}| = \dot{\theta}R = \omega R$, which is consistent with our formulation of circular motion. Differentiating the expression again and setting $\Ddot{\theta} = 0$ (simple circular motion), we obtain that:
+
+    \[ \Ddot{\mathbf{r}} = -\dot{\theta}^2\mathbf{r} \]
+
+    This is also known as the centripetal acceleration, with magnitude $|\Ddot{\mathbf{r}}| = \dot{\theta}^2R$ and direction towards the centre of the circle.
+\end{example}
+
+\subsection{Polar coordinates}
+
+\begin{definition}[Angular velocity]
+    Suppose a particle is rotating in a plane given by $\mathbf{r} \cdot \mathbf{n} = d$. The angular velocity is the rate at which the vector is rotating, and is defined as:
+
+    \[ \mathbf{\omega} = \dot{\theta}\mathbf{n} \]
+
+    Note that $\mathbf{n}$ is a unit vector perpendicular to the plane of rotation of the particle.
+\end{definition}
+
+\begin{theorem}[Differentiation of rotating unit vectors]
+    Consider a vector of unit length $\mathbf{e}$ rotating along an axis with angular velocity vector $\mathbf{\omega} = \dot{\theta}\mathbf{n}$, where $\mathbf{n}$ is the unit vector parallel to the axis' direction. Then:
+
+    \[ \frac{d\mathbf{e}}{dt} = \dot{\mathbf{e}} =  \mathbf{\omega} \times \mathbf{e}\]
+\end{theorem}
+
+We can now proceed in computing the velocity and acceleration of a particle using polar coordinates. First, we can deduce that $\mathbf{\dot{e_r}} = \dot{\theta}\mathbf{e_{\theta}}$ and $\mathbf{\dot{e_{\theta}}} = -\dot{\theta}\mathbf{e_r}$, by the way the cross product is defined between $\{\mathbf{e_r. e_{\theta}, k}\}$. Starting from the position vector:
+
+\[ \mathbf{r} = r\mathbf{e_r} \]
+
+Differentiating the product yields us the velocity:
+
+\[ \mathbf{\dot{r}} = \dot{r}\mathbf{e_r} + r\dot{\theta}\mathbf{e_{\theta}} \]
+
+The first term is the radial component, and the second one is the circumferential components. Another step of differentiation leaves us with the particle's acceleration:
+
+\[ \mathbf{\Ddot{r}} = (\Ddot{r} - r\dot{\theta}^2)\mathbf{e_r} + (r\Ddot{\theta} + 2\dot{r}\dot{\theta})\mathbf{e_{\theta}} \]
+
+In order, the four terms of the acceleration are: radial, centripetal, circumferential and coriolis.
+
+\subsection{Intrinsic coordinates}
+
+By starting as before, we first deduce that $\mathbf{\dot{e_t}} = \dot{\psi}\mathbf{e_n}$ and that $\mathbf{\dot{e_n}} = -\dot{\psi}\mathbf{e_t}$. Now, recall that for intrinsic coordinates there is no general formula for a particle's position. However, we can start from the velocity, given by:
+
+\[ \mathbf{v} = \dot{s}\mathbf{e_t} \]
+
+Note that $\mathbf{e_t}$ is always defined as having the same direction as the velocity. Differentiating yields us:
+
+\[ \mathbf{a} = \Ddot{s}\mathbf{e_t} + \dot{s}\dot{\psi}\mathbf{e_n}  \]
+
+\begin{definition}[Radius of curvature]
+    An infinitesimally short section of path can be approximated as a section of a circle with radius of curvature $R$, where $R$ is given by:
+
+    \[ R = \frac{ds}{d\psi} \]
+\end{definition}
+
+By manipulating the above relationship, we obtain:
+
+\[ R = \left|\frac{ds}{d\psi}\right| = \left|\frac{ds}{dt} \frac{dt}{d\psi}\right| = \left|\frac{\dot{s}}{\dot{\psi}}\right|\]
+
+And by using $\dot{s} = \dot{\psi}R$, we deduce the following correlation:
+
+\[ \dot{s}\dot{\psi} = \frac{\dot{s}^2}{R} \]
+
+This is true assuming all quantities are positive definite. Moreover, this expression enables us to deduce the instantaneous radius of curvature for any given path in a problem.
+
+Note that all the coordinate systems discussed above are equivalent, i.e. there exists a bijection between any two of them.
+
+\newpage
+
+\section{Discrete kinematics}
+
+As previously stated, in real life we rarely have a nice analytical (continuous) function that we can easily differentiate or integrate to find the required equations of motion. However, we can deduce a particle's position, velocity, or acceleration through means of numerical differentiation or integration, where we utilize a finite time step and an algorithm to determine the required quantity at each step.
+
+\subsection{Numerical differentiation}
+
+For the following definitions, consider a system where we have a finite time step $\Delta t$, and we record a certain variable from a particle's motion at finite time intervals, so that $x_k = x(k\Delta t)$.
+
+\begin{definition}[Single-sided estimate]
+    The single-sided estimate of the derivative of the variable $x$ at a time step $k \Delta t$ is given by:
+
+    \[ \dot{x_k} = \frac{x_k - x_{k+1}}{\Delta t} \]
+\end{definition}
+
+\begin{definition}[Central difference]
+    The central difference estimate of the derivative of the variable $x$ at a time step $k \Delta t$ is given by:
+
+    \[ \dot{x_k} = \frac{1}{2} \left( \frac{x_{k+1} - x_k}{\Delta t} + \frac{x_k - x_{k - 1}}{\Delta t} \right) \]
+
+    Otherwise, this is equivalent to:
+
+    \[ \dot{x_k} = \frac{x_{k+1} - x_{k-1}}{2\Delta t} \]
+\end{definition}
+
+The second method is generally a better approximation, however, its main drawback is that the method does not work well for estimating $x_0$ and $x_n$, i.e., the beginning and the ending of our data set. For this reason, we might use the single-sided estimate algorithm to compute those. Furthermore, the Python library NumPy utilizes the central difference method for estimating the gradient (i.e., the derivative) of a function when the method \textbf{numpy.gradient} is called.
+
+\subsection{Numerical integration}
+
+Consider an indefinitely differentiable function $f : \mathbb{R} \to \mathbb{R}$. Its value in a certain point $x_0 \in \mathbb{R}$ can be approximated using the Taylor series, i.e.:
+
+\[ f(x) = f(x_0) + \sum_{k = 1}^n \frac{f^{(k)}(x_0)}{k!} (x - x_0)^k \]
+
+By only taking the terms up to $x^2$, we obtain:
+
+\[ f(x) = f(x_0) + f'(x_0) (x - x_0) + o(x^2) \]
+
+Setting $x \to x + \delta x$ and $x_0 \to x$, we obtain:
+
+\[ f(x + \delta x) = f(x) + f'(x) \delta x + o(x^2) \]
+
+Hence, from this relationship we can deduce two methods used for numerical integration.
+
+\begin{definition}[Euler's method]
+    For a variable $x$, by knowing its derivative $\dot{x}$ at a time step $k\Delta t$, we can deduce that:
+
+    \[ x_n = x_{n-1} + \dot{x_{n-1}}\Delta t \]
+\end{definition}
+
+For example, a particle's position might be approximated as:
+
+\[ x_n = x_{n - 1} + v_{n - 1}\Delta t \]
+
+\begin{definition}[The Euler-Cromer method]
+    For a variable $x$, by knowing its derivative $\dot{x}$ at a time step $k\Delta t$, we can deduce that:
+
+    \[ x_n = x_{n - 1} + \dot{x_n}\Delta t \]
+\end{definition}
+
+The difference between the two methods is that Euler-Cromer utilizes the derivative at the current time step rather than the previous one. Hence:
+
+\[ x_n = x_{n - 1} + v_n \Delta t \]
+
+\newpage
+
+\section{Energy}
+
+Fundamentally, energy provides a completely different approach when solving problems, and is oftentimes much more simple and elegant. The main advantage when using energy is that all equations are time-independent.
+
+\subsection{Definition of energy}
+
+\begin{theorem}[Energy principle]
+    Over a given interval, the total change in kinetic energy is equal to the total work done by the applied forces, i.e.:
+    \[ \Delta T = W_{done} \]
+\end{theorem}
+
+\begin{proof}
+    Consider a particle of constant mass $m > 0$ with a total applied force $\mathbf{F}$. Then, by Newton's second law:
+
+    \[ \mathbf{F} = m\mathbf{a} \]
+
+    Using $\mathbf{a} = \frac{d\mathbf{v}}{dt}$ and by dotting the above equation by $\mathbf{v}$, we obtain:
+
+    \[ \mathbf{F} \cdot \mathbf{v} = m \frac{d\mathbf{v}}{dt} \cdot \mathbf{v} \]
+
+    However, $\mathbf{v} \cdot \frac{d\mathbf{v}}{dt} = \frac{d}{dt}\left(\frac{1}{2} \mathbf{v} \cdot \mathbf{v} \right)$, and by combining the two equations, we obtain:
+
+    \[ \mathbf{F} \cdot \mathbf{v} = \frac{d}{dt}\left(\frac{1}{2}m\mathbf{v}\cdot\mathbf{v}\right) \]
+
+    This yields us the definition of the kinetic energy, i.e. $T = \frac{1}{2}m\left|\mathbf{v}\right|^2$. Therefore:
+
+    \[ \mathbf{F} \cdot \mathbf{v} = \frac{dT}{dt} \Leftrightarrow \mathbf{F} \cdot \mathbf{v} dt = dT \]
+
+    Since $\mathbf{v} = \frac{d\mathbf{r}}{dt}$, this means $\mathbf{v}dt = d\mathbf{r}$, and this yields:
+
+    \[ \mathbf{F} \cdot d\mathbf{r} = dT \]
+
+    Therefore, by integrating the above relationship between an interval $A - B$, we get:
+
+    \[ T_B - T_A = \int_A^B \mathbf{F} \cdot d\mathbf{r} \]
+
+    Thus, $\Delta T = W_{done}$, and our proof is complete.
+\end{proof}
+
+Consider a particle moving through conservative force field $\mathbf{F} = \mathbf{F}\left(x, y, z\right)$ between locations $A$ and $B$. Therefore, the work from $A$ to $B$ is equal in magnitude to the work from $B$ to $A$, but it is in the opposite direction, so:
+
+\[ W_{AB} = -W_{BA} \]
+
+Therefore, we are able to assign particular energies $V_A$ and $V_B$ to both of these points. This is known as the potential energy.
+
+\begin{definition}[Potential energy]
+    Consider a particle of mass $m > 0$ moving through a conservative force field $\mathbf{F} = \mathbf{F}\left(x, y, z\right)$. The potential energy is defined as:
+
+    \[ \mathbf{F} = - \nabla \mathbf{V} \]
+\end{definition}
+
+For the case where motion is restricted in one axis, $F = -\frac{dV}{dx}$. This generalizes to:
+
+\[ \mathbf{F} \cdot d\mathbf{r} = -dV \]
+
+By integrating both sides within the interval $A - B$, we obtain:
+
+\[ \int_A^B \mathbf{F} \cdot d\mathbf{r} = V_A - V_B \]
+
+By combining the above two definitions, we obtain the conservation of energy principle:
+
+\[ T_A + V_A = T_B + V_B = E \]
+
+Where $E$ is the total energy of the particle.
+
+\begin{example}[Local gravity]
+    We want to deduce the potential function associated with local gravity. Note that $\mathbf{F} = -mg\mathbf{k}$. Since $\mathbf{F} \cdot d\mathbf{r} = -dV$, where $d\mathbf{r} = dx\mathbf{i} + dy\mathbf{j} + dz\mathbf{k}$, leading us to $mgdz = V$. Hence, the potential function is:
+
+    \[ V(z) = mgz \]
+\end{example}
+
+\begin{example}[Gravity - inverse square law]
+    In planetary motion, the gravitational attraction force is $\mathbf{F} = -\frac{GMm}{r^2}\mathbf{e_r}$. Note that in polar coordinates, $\mathbf{r} = r\mathbf{e_r}$, which means that $d\mathbf{r} = dr\mathbf{e_r} + rd\theta \mathbf{e_{\theta}}$. By dotting the two quantities, we obtain:
+
+    \[ -\frac{GMm}{r^2}dr = -dV \]
+
+    By integrating the above relationship, we obtain the potential function for planetary motion:
+
+    \[ V(r) = -\frac{GMm}{r} \]
+\end{example}
+
+\begin{example}[Springs]
+    For springs, motion is restricted to one degree of freedom. Hence, $Fdx = -dV$. From Hooke's law, we know that $F = -kx$, therefore:
+
+    \[ -kxdx = -dV \Leftrightarrow kxdx = dV \]
+
+    By integrating both sides, we obtain: 
+
+    \[ V(x) = \frac{1}{2}kx^2 \]
+\end{example}
+
+\subsection{Equilibrium and stability}
+
+Consider a particle moving in a conservative force field $F(x)$. The potential  function is given by:
+
+\[ F = -\frac{dV}{dx} \]
+
+\begin{theorem}[Equilibrium]
+    Consider a particle moving through a conservative force field $F(x)$. If $x_0$ is an equilibrium position, then:
+
+    \[ V'(x_0) = 0 \]
+\end{theorem}
+
+\begin{proof}
+    Since $F = -\frac{dV}{dx}$, and because at equilibrium $F = 0$, that means that:
+
+    \[ \frac{dV}{dx} = 0 \Leftrightarrow V'(x) = 0 \]
+\end{proof}
+
+\begin{theorem}[Stability]
+    Consider an equilibrium position $x_0$, where $V'(x_0) = 0$. We say that $x_0$ is a position of stable equilibrium $\iff$ $V''(x_0) > 0$. Otherwise, if $V''(x_0) < 0$, the position is unstable.
+\end{theorem}
+
+For more insight into this, if a function is convex, we are in a potential well, and the particle can only escape if enough energy is transferred to it. Otherwise, if the function is concave, an infinitesimally small amount of energy $dE$ will determine the particle to start moving, thus why the position is called unstable.
+
+Note that the potential function always remains in the region $V(x) \leq E$, where $E$ is the total energy, in the case of a conservative force field.
+
+\newpage
+
+\section{Linear momentum}
+
+\subsection{Constant mass systems}
+
+\begin{definition}[Linear momentum]
+    Consider a particle of mass $m > 0$. We define its linear momentum $\mathbf{p}$ as:
+
+    \[ \mathbf{p} = m\mathbf{v} \]
+\end{definition}
+
+By this definition, we can rewrite Newton's second law as:
+
+\[ \mathbf{F} = m\mathbf{a} = m\frac{d\mathbf{v}}{dt} = \frac{d\mathbf{p}}{dt} \]
+
+Note that this manipulation is only true if the mass of the particle remains constant (we are not considering relativistic effects or variable mass dynamics - this will be covered later).
+
+Therefore, $\mathbf{F}dt = d\mathbf{p}$, and by integrating both sides between a time interval, $t_A$ and $t_B$, we obtain:
+
+\[ \int_{t_A}^{t_B} \mathbf{F}dt = \int_A^B d\mathbf{p} = \mathbf{p}_B - \mathbf{p}_A \]
+
+The integral with respect to time of $\mathbf{F}$ is called the impulse, and is denoted by $\mathbf{J} = \int_{t_A}^{t_B} \mathbf{F}dt$. Note that the change in linear momentum is determined only by the net external force applied, regardless if the system of comprised of multiple particles or only one.
+
+\begin{definition}[Coefficient of restitution]
+    Consider two particles colliding one another, with speeds $u_1, u_2$ before the collision, and $v_1, v_2$ after the collision. The coefficient of restitution (which describes the loss of energy) is defined as:
+
+    \[ e = - \frac{v_2 - v_1}{u_2 - u_1} \]
+\end{definition}
+
+\subsection{Variable mass systems}
+
+Consider a body that is expelling a mass $dm$ of particles in a time interval $dt$, with a relative speed of $u$. Then:
+
+\[ dp = dm u \]
+
+Since $F = \frac{dp}{dt}$, this means that the force acting on the particles is given by:
+
+\[ F = \frac{dm}{dt}u \]
+
+From Newton's third law, we know that there must be an equal and opposite force acting on the body, hence:
+
+\[ F_{body} = - \frac{dm}{dt}u \]
+
+\begin{example}[Rocket equation]
+    Consider a rocket with total mass $m_0$, expelling fuel with a relative velocity $u$. We wish to find the equation of motion for said rocket.
+
+    \[ ma = F - mg \]
+
+    The thrust $F$ is given by $F = \frac{dm}{dt}u$, so:
+
+    \[ ma = \frac{dm}{dt}u - mg \]
+
+    If we neglect the effects of gravity on the rocket, we obtain the ideal rocket equation:
+
+    \[ ma = \frac{dm}{dt}u \iff m\frac{dv}{dt} = \frac{dm}{dt}u \]
+
+    Therefore, $mdv = dmu$, and by separating constants, we obtain:
+
+    \[ \frac{dm}{m} = \frac{1}{u}dv \]
+
+    And by integrating both sides, we obtain the ideal rocket equation:
+
+    \[ \Delta v = u\ln{\frac{m_0}{m}} \]
+\end{example}
+
+\newpage
+
+\section{Angular momentum}
+
+The principle of linear momentum is useful for solving problems involving translation. However, this section of the course is concerned with characterizing the rotation properties of bodies (as a particle cannot spin, since it is just a point). This concept is of particular interest when analyzing rigid bodies.
+
+\subsection{Moment of force}
+
+\begin{definition}[Moment of force about a point]
+    Consider a point $O$ and a particle whose position vector is $\mathbf{r}$ relative to $O$, acted upon by a force $\mathbf{F}$. Then the moment $\mathbf{q}$ of the force $\mathbf{F}$ about the point $O$ is defined as:
+
+    \[ \mathbf{q} = \mathbf{r} \times \mathbf{F} \]
+\end{definition}
+
+The geometrical interpretation of this definition is that the moment of a force $\mathbf{F}$ about a point $O$ is equal to the magnitude of the force multiplied by the perpendicular distance from $O$ to the line of action of the force. Moreover, $q = rF\sin{\theta}$, where $\theta$ is defined as the smallest angle between $\mathbf{F}$ and $\mathbf{r}$.
+
+Note that the moment is null when the vectors $\mathbf{r}$ and $\mathbf{F}$ are parallel, i.e. the line of action of the force passes through its position vector.
+
+\begin{definition}[Moment of force about an axis]
+    The moment $Q$ of a force $\mathbf{F}$ about an axis with direction given by the unit vector $\mathbf{n}$, that passes through a fixed point $O$ is given by:
+
+    \[ Q = \left(\mathbf{r} \times \mathbf{F}\right) \cdot \mathbf{n} \]
+
+    Note that the position vector $\mathbf{r}$ is defined as the vector pointing from $O$ to the point of application of the force.
+
+    The geometrical interpretation of this definition is that the moment of $\mathbf{F}$ about an axis is the shorted distance $d$ from the axis to the particle multiplied by the component of a force that is perpendicular to both the axis and the shortest-distance line.
+
+    Note that the moment $Q$ is null if either the force is parallel to the position vector, or if the moment about the point $O$ is perpendicular to the axis.
+\end{definition}
+
+\begin{theorem}[Work of a torque]
+    For an applied torque $M$ on a particle, the total work done by the torque by imposing a rotation of $\theta$ radians is given by:
+
+    \[ W = M\theta \]
+\end{theorem}
+
+\begin{theorem}[Power of a torque]
+    For an applied torque $M$ on a particle, the total power is:
+
+    \[ P = M\omega \]
+\end{theorem}
+
+\begin{proof}
+    \[ P = \frac{dW}{dt} = M\frac{d\theta}{dt} = M\omega \]
+\end{proof}
+
+\subsection{Angular momentum}
+
+\begin{definition}[Angular momentum about a point]
+    The angular momentum of a particle of mass $m > 0$ about a point $O$ is given by:
+
+    \[ \mathbf{h} = \mathbf{r} \times \mathbf{p} = \mathbf{r} \times \left(m\mathbf{v}\right) \]
+\end{definition}
+
+Since we saw that the rate of change of linear momentum is equal to the external force applied, we wish to see how this principle relates to angular momentum. 
+
+\begin{theorem}[Change of angular momentum]
+    The rate of change in angular momentum is equal to the external moment of force applied, i.e.:
+    \[ \frac{d\mathbf{h}}{dt} = \mathbf{r} \times \mathbf{F} \]
+\end{theorem}
+
+\begin{proof}
+    Consider a particle with angular momentum vector $\mathbf{h}$.
+
+    \[ \frac{d\mathbf{h}}{dt} = \frac{d}{dt}\left(\mathbf{r} \times m\mathbf{v}\right) \]
+
+    Hence, $\frac{d\mathbf{h}}{dt} = \frac{d\mathbf{r}}{dt} \times m\mathbf{v} + r \times \frac{d}{dt} (m\mathbf{v})$. Now, since $\frac{d\mathbf{r}}{dt} = \mathbf{v}$, the first term is null, because we are crossing a vector with itself, hence:
+
+    \[ \frac{d\mathbf{h}}{dt} = \mathbf{r} \times m\mathbf{a} = \mathbf{r} \times \mathbf{F} \]
+\end{proof}
+
+Therefore, the increase of angular momentum about a certain point $O$ is given by:
+
+\[ \frac{d\mathbf{h}}{dt} = \mathbf{r} \times \mathbf{F} \]
+
+This definition also extends for a collection of particles, just as it did in the case of linear momentum.
+
+\begin{definition}[Angular momentum about an axis]
+    Consider a particle of mass $m > 0$. Its angular momentum about an axis with direction given by unit vector $\mathbf{n}$ is:
+
+    \[ H = \left(\mathbf{r} \times \mathbf{p}\right) \cdot \mathbf{n} \]
+\end{definition}
+
+By proceeding in the same way as before, we deduce that the change in angular momentum about an axis is given by the total moment about that axis:
+
+\[ \frac{dH}{dt} = Q = \left(\mathbf{r} \times \mathbf{F}\right) \cdot \mathbf{n} \]
+
+\newpage
+
+\section{Satellite dynamics}
+
+In the following section, we will thoroughly analyze satellite dynamics. In the context of planetary motion, a satellite can be regarded as a point mass, i.e. a particle, in regards to the Earth.
+
+\begin{theorem}[Kepler's second law]
+    A planet covers the same area of space in the same amount of time, no matter where it is in its orbit.
+\end{theorem}
+
+\begin{proof}
+    First, we want to determine what area is covered by a planet in its orbit during a time $dt$. Since for an infinitesimally small element of area, the sweep can be approximated as:
+
+    \[ dS = \frac{1}{2}r^2d\theta \]
+
+    Hence, $\frac{dS}{dt} = \frac{1}{2}r^2\dot{\theta}$. Now, the force in orbit is given by:
+
+    \[ \mathbf{F} = -\frac{GMm}{r^2}\mathbf{e_r} \]
+
+    The position vector is given by $\mathbf{r} = r\mathbf{e_r}$. Since $\frac{d\mathbf{h}}{dt} = \mathbf{r} \times \mathbf{F}$, we deduce that $\frac{d\mathbf{h}}{dt} = \mathbf{0}$, so the angular momentul is constant. However, by calculating the angular momentum using the determinant definition of the cross product, we obtain:
+
+    \[ \mathbf{h} = mr^2\dot{\theta} \]
+
+    Since the mass is constant, it means that the quantity $r^2\dot{\theta}$ is constant, meaning $\frac{dS}{dt}$ is constant.
+\end{proof}
+
+\subsection{Determining the equation of motion}
+
+By applying Newton's second law, we obtain:
+
+\[ \mathbf{F} = m\mathbf{a} = -\frac{GMm}{r^2}\mathbf{e_r} \]
+
+However, in polar coordinates, the acceleration vector is given by:
+
+\[ \mathbf{a} = \left(\Ddot{r} - r\dot{\theta}^2\right)\mathbf{e_r} + \left(r\Ddot{\theta} + 2\dot{r}\dot{\theta}\right)\mathbf{e_{\theta}} \]
+
+Now, we can equate all terms in the radial direction (direction of vector $\mathbf{e_r}$). This yields us:
+
+\[ -\frac{GM}{r^2} = \Ddot{r} - r\dot{\theta}^2 \]
+
+Since $h_0 = mr^2\dot{\theta}$ as previously described, we can define a new quantity: $\hat{h_0} = \frac{h_0}{m} = r^2\dot{\theta}$. Note that this quantity is a constant as previously described by Kepler's second law.
+
+Using this and rearranging the previous equation, we obtain the simplified equation of motion:
+
+\[ \Ddot{r} - \frac{\hat{h_0}^2}{r^3} + \frac{GM}{r^2} = 0 \]
+
+To solve it, we will utilize the substitution $u = \frac{1}{r}$. We now determine $\Ddot{r}$. Therefore:
+
+\[ \dot{r} = \frac{dr}{dt} = \frac{d}{dt}\left(\frac{1}{u}\right) = \frac{d}{du}\left(\frac{1}{u}\right)\frac{du}{d\theta}\frac{d\theta}{dt} = -\frac{1}{u^2}\dot{\theta}\frac{du}{d\theta} = -r^2\dot{\theta}\frac{du}{d\theta} = -\hat{h_0}\frac{du}{d\theta} \]
+
+We proceed in a similar fashion to deduce $\Ddot{r}$:
+
+\[ \Ddot{r} = -\hat{h_0}\frac{d}{dt}\frac{du}{d\theta} = -\hat{h_0} \frac{d^2u}{d\theta^2}\frac{d\theta}{dt} = \hat{h_0}\frac{d^2u}{d\theta^2}\frac{\hat{h_0}}{r^2} = -\hat{h_0^2}u^2\frac{d^2u}{d\theta^2}\]
+
+By substituting this back into the original equation, we obtain:
+
+\[ \hat{h_0}^2\frac{d^2u}{d\theta^2} + \hat{h_0}^2u = GM \]
+
+This is a second order linear ordinary differential equation, with general solution of the type:
+
+\[ u = A\cos{\left(\theta + \alpha\right)} + \frac{GM}{\hat{h_0^2}} \]
+
+By further manipulating this equation by choosing $\alpha = 0$, transforming back to $r$ and making our own choice of constants, we obtain:
+
+\[ \frac{1}{r} = \frac{GM}{\hat{h_0^2}}\left(1 + e\cos{\theta}\right) \]
+
+Note that this is the equation of a conic section, which are of four different types: $e = 0$ (circle), $e < 1$ (ellipse), $e = 1$ (parabola) and $e > 1$ (hyperbola).
+
+\begin{proposition}[Solution for a circle]
+    For a circle, it is always true that:
+
+    \[ \frac{mv^2}{R} = \frac{GMm}{R^2} \]
+
+    Note that $R$ is the radius of the orbit, which always has to remain constant.
+\end{proposition}
+
+\begin{proposition}[Solution for an ellipse]
+    For a circle, we define the semi major axis ($a$) and the semi minor axis ($b$). The apogee is the point furthest away in the orbit, having radius $r_A$, and the perigee is the point of closest approach, with radius $r_P$. The following relationships hold:
+
+    \[ r_P = \left(1 - e\right)a \text{   and   } r_A = \left(1 + e\right)a\]
+
+    Furthermore, the angular momentum is conserved about the Earth, so for our satellite (or planet):
+
+    \[ mv_Ar_A = mv_Pr_P \Leftrightarrow \frac{v_A}{v_P} = \frac{r_P}{r_A} \]
+
+    Note that we can use these relationships because at perigee and apogee, the velocity is always perpendicular to the trajectory.
+
+    Lastly, to fully solve for an elliptic trajectory, we must always consider conservation of energy:
+
+    \[ \frac{1}{2}mv_A^2 - \frac{GMm}{r_a^2} = \frac{1}{2}mv_P^2 - \frac{GMm}{r_P^2} \]
+
+    This gives us a complete set of equations to determine the relevant parameters of the trajectory. Furthermore, we can find the semi minor axis by using:
+
+    \[ \frac{b}{a} = \sqrt{1 - e^2} \]
+\end{proposition}
+
+Note that angular momentum is always conserved about other such central-force systems. For instance, we might have a particle sliding along a table, fixed with an elastic spring - angular momentum is conserved here as well.
+
+\newpage
+
+\section{Rigid body kinematics}
+
+Everything we have looked at so far concerns the dynamics of particles, which are concentrated points of mass. This is just a significant mathematical idealisation and not something that necessarily works in practice. For this reason, we will now consider systems of particles that cannot displace relative to one another, i.e. - rigid bodies.
+
+\subsection{Relative motion}
+
+Consider two points in space $A$ and $B$. We wish to evaluate their motion relative to a fixed origin $O$.
+
+\[ \mathbf{r_B} = \mathbf{r_A} + \mathbf{r_{B/A}} \]
+
+Note that $\mathbf{r_{B/A}}$ is the relative position vector of B to A, so $\mathbf{r_{B/A}} = \mathbf{r_B} - \mathbf{r_A}$.
+Likewise, $\mathbf{v_B} = \mathbf{v_A} + \mathbf{v_{B/A}}$ and $\mathbf{a_B} = \mathbf{a_A} + \mathbf{a_{B/A}}$.
+
+Note that this expression is true only if the reference frame we picked is not rotating.
+
+\subsection{Relative motion in rotating reference frames}
+
+Consider a reference frame centered at the origin $O$ rotating with angular velocity vector $\mathbf{\omega}$. Consider two points $A$ and $B$. We wish to express the position vector of $B$ as before. It is useful to define a unit vector $\mathbf{e}$ in the direction $AB$ and denote the initial distance between $A$ and $B$ to be $r$. Hence:
+
+\[ \mathbf{r_B} = \mathbf{r_A} + \mathbf{r_{B/A}} = \mathbf{r_A} + r\mathbf{e} \]
+
+We can now differentiate this expression in order to obtain the velocity:
+
+\[ \mathbf{v_B} = \mathbf{v_A} + \dot{r}\mathbf{e} + \mathbf{\omega} \times (r\mathbf{e}) \]
+
+In the expression above, we used the theorem that tells us how to differentiate rotating unit vectors. We can also deduce the expression for the acceleration of $B$:
+
+\[ \mathbf{a_B} = \mathbf{a_A} + \Ddot{r\mathbf{e}} + 2\dot{r}(\mathbf{\omega} \times \mathbf{e}) + r(\dot{\mathbf{\omega}} \times \mathbf{e}) + r(\mathbf{\omega} \times (\mathbf{\omega} \times \mathbf{e})) \]
+
+Note that this expression is entirely general. However, also note that there are no constraints applied to this system other than the points having to be rotating about the origin.
+
+\subsection{Relative motion of points within rigid bodies}
+
+\begin{definition}[Rigid body]
+    A rigid body is an object with continuously distributed mass that cannot deform. It can be thought of as a collection of particles that have a fixed spacing between them.
+\end{definition}
+
+\begin{proposition}
+    From the definition above, we apply the constraint that between any two points $A$, $B$, with $\mathbf{r_{B/A}} = r\mathbf{e}$, where $\mathbf{e}$ is a unit vector, $r$ is a constant quantity, i.e. any of its time-derivatives are null.
+\end{proposition}
+
+\begin{proposition}
+    Consider a rigid body and two points $A$ and $B$ on its surface, with unit direction vector $\mathbf{e}$ between them. Then:
+
+    \[ \mathbf{v_{B/A}} \cdot \mathbf{e} = 0 \Leftrightarrow \mathbf{v_A} \cdot \mathbf{e} = \mathbf{v_B} \cdot \mathbf{e} \]
+
+    This essentially means that the two points are moving with the same velocity in the direction given by $\mathbf{e}$. Otherwise, the body would deform, which is not allowed for rigid bodies.
+\end{proposition}
+
+Starting from $\mathbf{r_B} = \mathbf{r_A} + \mathbf{r_{B/A}} = \mathbf{r_A} + r\mathbf{e}$, we can deduce the velocity of point $B$:
+
+\[ \mathbf{v_B} = \mathbf{v_A} + \mathbf{\omega} \times (r\mathbf{e}) = \mathbf{v_A} + \mathbf{\omega} \times \mathbf{r_{B/A}} \]
+
+This is true, because as mentioned earlier, $\dot{r} = 0$. We can use the same manipulation to obtain the acceleration:
+
+\[ \mathbf{a_B} = \mathbf{a_A} + \mathbf{\dot{\omega}} \times \mathbf{r_{B/A}} + \mathbf{\omega} \times (\mathbf{\omega} \times \mathbf{r_{B/A}}) \]
+
+Note that in order for us to define the motion of all points for planar motion of a rigid body, we require the translation of a points, given by $v_x, v_y$ and the angular velocity. Hence, planar rigid body motion is said to have three degrees of freedom.
+
+\subsection{Instantaneous centres}
+
+\begin{definition}[Instantaneous centre]
+    For planar rigid body motion, there exists a point in the plane of a lamina that has zero velocity, i.e. it is instantaneously at rest. This point is known as the \"instantaneous centre\" and it does not have to be necessarily contained within the lamina's surface. 
+
+    At a given instant, the lamina always behaves as if it were rotating with angular velocity $\mathbf{\omega}$ about the instantaneous centre.
+\end{definition}
+
+The instantaneous centre can be found in two ways:
+
+\begin{itemize}
+    \item If we know the directions of velocities at two points on the lamina, we can draw two perpendiculars and intersect them. Their point of intersection is the instantaneous centre.
+    \item If we know the direction and magnitude of one point, we know that $\rho = \frac{v}{\omega}$, and we can draw a perpendicular of length $\rho$ to deduce where the instantaneous centre is located.
+\end{itemize}
+
+The instantaneous centre allows us to determine the velocity of any point, as long as we know the distance between the point and the centre, and the angular velocity:
+
+\[ \left|\mathbf{v}\right| = \left|\mathbf{\omega} \times \mathbf{r}\right| \]
+
+Note that this is also the basis for the no-slip condition, which is $v = \omega R$ or $a = \omega^2R$.
+
+\newpage
+
+\section{Rigid body properties}
+
+Having considered the kinematics of rigid bodies, we now need to look into their dynamics. The next of this section will be concerned with defining the centre of mass and the moment of inertia.
+
+\subsection{Centre of mass}
+
+\begin{definition}[Centre of mass]
+    The centre of mass represents a balance point where if a rigid body were to be simply supported, then it would not rotate.
+\end{definition}
+
+\begin{theorem}[Position vector of centre of mass]
+    Consider a rigid body with total mass $M > 0$. Then, the position vector of the centre of mass is given by:
+
+    \[ \mathbf{r_G} = \frac{1}{M}\int\mathbf{r}dm \]
+\end{theorem}
+
+\begin{proof}
+    The moments due to weight relative to the centre of mass must be null for the body to be in equilibrium, due to the above definition. Then:
+
+    \[ \sum_i \left(\mathbf{r_G} - \mathbf{r_i}\right)m_ig = 0 \]
+
+    But because a rigid body is made up of an infinite collection of infinitesimally small particles, then in the limit:
+
+    \[ \int(\mathbf{r_G} - \mathbf{r})dm = 0 \Leftrightarrow \int \mathbf{r_G}dm = \int \mathbf{r}dm\]
+
+    But because $\mathbf{r_G}$ is a constant, the left side becomes:
+
+    \[ M\mathbf{r_g} = \int \mathbf{r}dm \]
+
+    Which is equivalent to:
+
+    \[ \mathbf{r_G} = \frac{1}{M} \int \mathbf{r}dm \]
+\end{proof}
+
+\begin{example}[Centre of mass of rectangle]
+    Consider a uniform rectangular lamina with lengths given by $a, b$. Then:
+
+    \[ \lambda = \frac{dm}{dS} \Leftrightarrow dm = \lambda dS \]
+
+    Since $dS = dx dy$, we deduce that $dm = \lambda dx dy$. The total mass is given by $M = \lambda ab$, so to determine the centre of mass, we have to solve the following integral:
+
+    \[ \mathbf{r_G} = \frac{1}{\lambda ab} \int_0^b\int_0^a\left(x\mathbf{i} + y\mathbf{j}\right)\lambda dx dy \]
+
+    Hence, the centre of mass is given by: $\mathbf{r_G} = \frac{a}{2}\mathbf{i} + \frac{b}{2}\mathbf{j}$, which was to be expected.
+\end{example}
+
+\begin{proposition}[Centre of mass of multiple laminae]
+    For multiple rectangular laminae, the centre of mass can be found, from the definition, by:
+
+    \[ \mathbf{r_G} = \frac{\sum_i \mathbf{r_{G_i}}S_i}{\sum_i S_i} \]
+
+    Where $\mathbf{r_{G_i}}$ is the centre of mass of the $i^{\text{th}}$ lamina, and $S_i$ is its area. Note that we can use the area here because for a lamina, the mass is uniformly distributed per the area.
+\end{proposition}
+
+\begin{proposition}[Holes]
+    Note that if a body has a hole in it, we can treat that part of a lamina as a negative mass. Also note that the centre of mass need not be within the body itself.
+\end{proposition}
+
+\begin{theorem}[Equivalent force on a rigid body]
+    The total equivalent force on a rigid body of mass $M > 0$ can be written as:
+
+    \[ M\mathbf{a_G} = \sum_i \mathbf{F_i} \]
+\end{theorem}
+
+\begin{proof}
+    The reason why the centre of mass is important becomes clear when we attempt Newton's second law to each individual particle. This means:
+
+    \[ m_i\mathbf{a_i} = \mathbf{F_i} + \sum_{j \neq i}\mathbf{G_{ij}} \]
+
+    This means that the resultant force exerted on each particle is the external force applied on it plus the sum of all internal interactions. This can be added up for all particles in the system:
+
+    \[ \sum_i m_i\mathbf{a_i} = \sum_i \mathbf{F_i} + \sum_i \sum_{j \neq i}\mathbf{G_{ij}} \]
+
+    However, the second sum is null, because when we sum up the internal forces across al particles, we effectively add $\mathbf{G_{ij}}$ and $\mathbf{G_{ji}}$ together, and $\mathbf{G_{ij}} = -\mathbf{G_{ji}}$. Hence:
+
+    \[ \sum_i m_i\mathbf{a_i} = \sum_i \mathbf{F_i} \]
+
+    In the limit, this is equivalent to:
+
+    \[ \int \mathbf{a}dm = \mathbf{F} \]
+
+    However, $\mathbf{a} = \mathbf{\Ddot{r}}$, so:
+
+    \[ \int \mathbf{a}dm = \int \mathbf{\Ddot{r}}dm \]
+
+    However, we know that $\int \mathbf{r}dm = M\mathbf{r_G}$, and by differentiating under the integral twice with respect to time, we obtain:
+
+    \[ \int \mathbf{\Ddot{r}}dm = M\mathbf{\Ddot{r_G}} \]
+
+    And by combining the two key relationships above, we obtain:
+
+    \[ M\mathbf{\Ddot{r_G}} = \mathbf{F} = \sum_i \mathbf{F_i}\]
+\end{proof}
+
+This property of rigid bodies is fundamental to solving problems where we have to solve for force equilibrium - we can effectively predict the motion of the rigid body by simply making use of its centre of mass.
+
+\subsection{Moment of inertia}
+
+In the previous section, we have seen that the translational dynamics of any body can be described by effectively treating it as a particle with all its mass concentrated at its centre of mass. However, how do we quantify rotation? For this reason, we need to introduce another variable - the moment of inertia.
+
+The general expression relating torque to the angular acceleration of a rigid body in three dimensions is:
+
+\[ 
+\begin{bmatrix}
+    q_x \\
+    q_y \\
+    q_z
+\end{bmatrix} = 
+\begin{bmatrix}
+    I_{xx} & I_{xy} & I_{xz} \\
+    I_{yx} & I_{yy} & I_{yz} \\
+    I_{zx} & I_{zy} & I_{zz}
+\end{bmatrix} \begin{bmatrix}
+    \dot{\omega_x} \\
+    \dot{\omega_y} \\
+    \dot{\omega_z}
+\end{bmatrix}
+\]
+
+However, this is beyond the scope of this course. For now, we will obtain a similar expression for rigid bodies considered in two dimensions only.
+
+Consider a rigid body that can rotate about a fixed axis $O$. We will use polar coordinates to describe its motion. Consider an arbitrary point $P$ on the body's surface. Hence, its position vector is given by $\mathbf{r} = r\mathbf{e_r}$. Then:
+
+\[ \mathbf{v} = \dot{r}\mathbf{e_r} + r\dot{\theta}\mathbf{e_{\theta}} \]
+
+Since $\dot{r} = 0$, because the body is rigid, that means that:
+
+\[ \mathbf{v} = r\dot{\theta}\mathbf{e_{\theta}} \]
+
+Likewise, we obtain the acceleration:
+
+\[ \mathbf{a} = -r\dot{\theta}^2\mathbf{e_r} + r\Ddot{\theta}\mathbf{e_{\theta}} \]
+
+Using $\omega = \dot{\theta}$ for simplicity:
+
+\[ \mathbf{a} = -r\omega^2\mathbf{e_r} + r\dot{\omega}\mathbf{e_{\theta}} \]
+
+Taking moments about $O$ for each individual particle, it is obvious that the radial component will not contribute any moment. Since the tangential force is:
+
+\[ \mathbf{F_i} = m_ir_i\dot{\omega}\mathbf{e_{\theta}} \]
+
+The moment of an individual particle becomes:
+
+\[ \mathbf{q_i} = \mathbf{r_i} \times \mathbf{F_i} = m_ir_i^2\dot{\omega}\mathbf{k}\]
+
+In the limit, the above expression becomes:
+
+\[ \mathbf{q} = \left(\int r^2dm\right) \dot{\omega}\mathbf{k} \]
+
+\begin{definition}[Moment of inertia]
+    Consider a rigid body undergoing planar motion, rotating about a fixed axis $O$. Then, we define the moment of inertia as:
+
+    \[ I = \int r^2dm \]
+\end{definition}
+
+\begin{theorem}
+    For a rigid body undergoing planar motion, rotating about a fixed axis $O$, the total sum of moments is equal to the product between its moment of inertia and its angular acceleration, i.e.:
+
+    \[ q = I\dot{\omega} \]
+\end{theorem}
+
+Note that when using the above theorem, one should always compute the moment of inertia about the point for which they wish to calculate moments about. Otherwise, the theorem does not hold. It is generally most useful to consider the moment of inertia about a rigid body's centre of mass. 
+
+\newpage
+
+\section{Axis theorems}
+
+Considering a general three dimensional rigid body, the moment of inertia about each axis is given by:
+$I_{xx} = \int r_x^2dm, I_{yy} = \int r_y^2dm, I_{zz} = \int r_z^2dm$, where $r_x, r_y, r_z$ are the distances from each axis.
+
+\subsection{Perpendicular axis theorem}
+
+\begin{theorem}[Perpendicular axis theorem]
+    For a lamina, the moment of inertia about the $zz'$ axis is given by:
+
+    \[ I_{zz} = I_{xx} + I_{yy} \]
+\end{theorem}
+
+\begin{proof}
+    Because our rigid body is a lamina, then it can be considered infinitely thin. Therefore, it has no depth, so $z \to 0$. Hence, $I_{xx} = \int y^2dm, I_{yy} = \int x^2dm$. Since $I_{zz} = \int (x^2 + y^2)dm$, we can clearly observe that:
+
+    \[ I_{zz} = I_{xx} + I_{yy} \]
+\end{proof}
+
+However, in certain problems we might have the moment of inertia about the centre of mass, but we would want to use it about an arbitrary point in the plane of the body - but without having to calculate it again. For this reason, we use the parallel axis theorem, otherwise known as Steiner's theorem.
+
+\subsection{Parallel axis theorem}
+
+\begin{theorem}[Parallel axis theorem]
+    Consider a rigid body undergoing planar motion. The moment of inertia about an arbitrary point $P$ is given by:
+
+    \[ I_P = I_G + mr^2 \]
+
+    Where $r$ is the separation between the centre of mass and $P$.
+\end{theorem}
+
+\begin{proof}
+    We choose a Cartesian coordinate system where we align the $z$ axis with our axis of interest. We fix the centre of the system so that $zz'$ passes through $G$. In this system:
+
+    \[ I_G = I_{zz} = \int (x^2 + y^2)dm \]
+
+    Now, considering an arbitrary point $P$:
+
+    \[ I_P = \int ((x_G - x)^2 + y^2)dm = \int (x_G^2 - 2x_Gx + x^2 + y^2)dm \]
+
+    We can split this as:
+
+    \[ I_P = \int (x^2 + y^2)dm + \int x_G^2dm - 2x_G\int xdm \]
+
+    This then gives:
+
+    \[ I_P = \int(x^2 + y^2)dm + mx_G^2 \]
+
+    Setting $x_G \to r$, we obtain our desired result:
+
+    \[ I_P = I_G + mr^2 \]
+\end{proof}
+
+\subsection{Composite bodies}
+
+The moment of inertia of a composite body about an axis is the sum of the moments of inertia of the individual components about the same axis (via the parallel axis theorem). The procedure in doing so is as follows:
+
+\begin{itemize}
+    \item Find $I_G$ for each component
+    \item Use the parallel axis theorem to find $I_O$ for each component
+    \item Sum the individual contributions from each component, yielding us that $I_O = \sum_k I_{O_k}$
+\end{itemize}
+
+\newpage
+
+\section{Equations of motion and D'Alembert forces}
+
+We now consider the case of general planar motion, where all the particles in the rigid body are free to move in a plane and all planes are parallel to a fixed plane called the plane of motion. We will label the centre of mass of the lamina as $G$. Then, the velocity of a particle is given by:
+
+\[ \mathbf{v_i} = \mathbf{v_G} + \mathbf{v_{i/G}} = \mathbf{v_G} + \mathbf{\omega} \times \mathbf{r_{i/G
+}} \]
+
+Likewise, the acceleration is:
+
+\[ \mathbf{a_i} = \mathbf{a_G} + \dot{\mathbf{\omega}} \times \mathbf{r_{i/G}} + \mathbf{\omega} \times (\mathbf{\omega} \times \mathbf{r_{i/G}}) \]
+
+We are interested in the total moment $\mathbf{q}$ of the force $\mathbf{F}$ acting on the body. For a particle:
+
+\[ \mathbf{q_i} = \mathbf{r_{i/G}} \times \mathbf{F_i} \]
+
+After performing all relevant calculations, we are left with:
+
+\[ \mathbf{q_i} = m_i\left(\mathbf{r_{i/G} \times \mathbf{a_G} + \left|\mathbf{r_{i/G}}\right|^2\dot{\mathbf{\omega}}}\right) \]
+
+In the limit, we obtain:
+
+\[ \mathbf{q} = \left(\int \mathbf{r}dm\right) \times \mathbf{a_G} + \dot{\omega}\int r^2dm \]
+
+We notice that the first term is null because the integral is the definition of the centre of mass. Hence:
+
+\[ \mathbf{q} = I_G\mathbf{\dot{\omega}} \]
+
+Therefore, for a lamina, the total moment of all forces about the centre of mass is equal to the product between its moment of inertia and its angular acceleration. This is the same result as previously obtained, however the difference lies within the assumption: the body is no longer rotating about a fixed axis, and now it is required that it is a lamina.
+
+\subsection{D'Alembert forces}
+
+For a planar rigid body, we know that:
+
+\[ \sum_i \mathbf{F_i} = m\mathbf{a_G} \]
+
+Also:
+
+\[ \sum_i \mathbf{q_i} = I_G \mathbf{\dot{\omega}} \]
+
+This is the equivalent of saying that $\sum_i \mathbf{F_i} - m\mathbf{a_G} = 0$ and $\sum_i \mathbf{q_i} - I_G\dot{\mathbf{\omega}} = 0$. Nothing is fundamentally changed, however, by viewing forces and moments this way, we are able to effectively change any dynamics problem into a statics problem.
+
+What we are effectively doing is that we are representing the resultant moment and force as forces acting on the body. However, they are acting in the opposite way to which they would normally be acting.`
+
+\newpage
+
+\section{Momentum and energy in rigid bodies}
+
+We next consider how the principles of momentum and energy can be applied to the planar motion of rigid bodies.
+
+\subsection{Momentum}
+
+We already know from our first formal derivation of momentum, that the rate of change in linear momentum law can be applied for a group of particles (it is not restricted to a single particle). Therefore:
+
+\[ \mathbf{F} = \frac{d\mathbf{p}}{dt} \]
+
+Note that this is true for any rigid body. Furthermore, we can use $\mathbf{F} = m\mathbf{a_G}$ to obtain:
+
+\[ m\mathbf{a_G} = \frac{d\mathbf{p}}{dt} \]
+
+This can then be applied directly to the centre of mass of the rigid body, where $\mathbf{p} = m\mathbf{v_G}$. Note that the centre of mass is never rotating - it is always performing pure translation.
+
+\subsection{Angular momentum}
+
+Consider a the $i^{\text{th}}$ particle on a rigid body. We suppose it is acted upon by an external force $\mathbf{F_i}$ and interaction forces between itself and other particles. The rate of change in angular momentum, from previous sections, is given by:
+
+\[ \frac{d\mathbf{h_i}}{dt} = \mathbf{r_i} \times (m_i\mathbf{a_i}) \]
+
+However, $m_i\mathbf{a_i} = \mathbf{F_i} + \sum_{i \neq j} \mathbf{G_{ij}}$, so the rate of change in angular momentum is:
+
+\[ \frac{d\mathbf{h_i}}{dt} = \mathbf{r_i} \times \left(\mathbf{F_i} + \sum_{i \neq j}\mathbf{G_{ij}}\right)\]
+
+Therefore, the total change in angular momentum is:
+
+\[ \frac{d\mathbf{h}}{dt} = \sum_i \frac{d\mathbf{h_i}}{dt} \]
+
+However, when we add up all the particles, we obtain identical in magnitude, but opposite moments (twice) for each internal force. Therefore:
+
+\[ \frac{d\mathbf{h}}{dt} = \sum_i (\mathbf{r_i} \times \mathbf{F_i}) \]
+
+Therefore, for any fixed point $O$, the rate of change in angular momentum is equal to the total moment about that point, i.e.:
+
+\[ \mathbf{q} = \frac{d\mathbf{h}}{dt} \]
+
+Note that this principle only works in two cases: either the angular momentum and moments are taken about a necessarily fixed point $O$, or about the centre of mass $G$.
+
+\begin{theorem}[Angular momentum about an arbitrary point]
+    Consider a rigid body whose centre of mass $G$ is translating with $\mathbf{v_G}$ and has position vector $\mathbf{r_G}$ with respect to an arbitrary point $O$. Then:
+
+    \[ \mathbf{h_O} = \mathbf{r_G} \times (m\mathbf{v_G}) + \mathbf{h_G} \]
+\end{theorem}
+
+\begin{theorem}[Angular momentum principle about the centre of mass]
+    For a rigid body with centre of mass $G$, the change in angular momentum about the centre of mass is equal to the total moment about $G$, i.e.:
+
+    \[ \mathbf{q_G} = \frac{d\mathbf{h_G}}{dt} \]
+\end{theorem}
+
+\begin{theorem}[Angular momentum principle about a fixed point]
+    For a rigid body, the rate of change in angular momentum about a fixed (constrained) point $O$ is equal to the total moment about that point, i.e.:
+
+    \[ \mathbf{q_O} = \frac{d\mathbf{h_O}}{dt} \]
+\end{theorem}
+
+These can also be rewritten in integral form as $\int_{t_A}^{t_B} \mathbf{F}dt = \Delta \mathbf{p}$ and $\int_{t_A}^{t_B} \mathbf{q_G}dt = \Delta \mathbf{h_G}$
+
+\begin{theorem}[Angular momentum]
+    For a rigid body, the angular momentum at either a fixed point $O$ or the centre of mass is given by:
+
+    \[ \mathbf{h} = I\mathbf{\omega} \]
+\end{theorem}
+
+\subsection{Energy}
+
+At any given instant, the velocity of the $i^{\text{th}}$ particle on a rigid body is given by:
+
+\[ \mathbf{v_i} = \mathbf{v_G} + \mathbf{\omega} \times \mathbf{r_{i/G}} \]
+
+The total kinetic energy is then:
+
+\[ T = \sum_i \frac{1}{2}m_i\left|\mathbf{v_G} + \mathbf{\omega} \times \mathbf{r_{i/G}}\right|^2 \]
+\[ \Leftrightarrow T = \frac{1}{2}\sum_i m_i(\mathbf{v_G} + \mathbf{\omega} \times \mathbf{r_{i/G}})\cdot(\mathbf{v_G} + \mathbf{\omega} \times \mathbf{r_{i/G}}) \]
+\[ \Leftrightarrow T = \frac{1}{2}\sum_i m_i(v_G^2 + \omega^2r_{i/G}^2) + \sum_i m_i\mathbf{v_G}\cdot(\mathbf{\omega} \times \mathbf{r_{i/G}}) \]
+
+Since the second sum is null, we are left with:
+
+\[ T = \frac{1}{2}Mv_G^2 + \frac{1}{2}I_G\omega^2 \]
+
+Therefore, we can see that for a rigid body, the kinetic energy has two components: a translational one, and a rotational one.
+
+\newpage
+
+\section{Impacts}
+
+We will now consider the dynamics of rigid bodies in the even of collisions. Recall that our definition of an impulse is:
+
+\[ \mathbf{J} = \int_{t_A}^{t_B} \mathbf{F}dt = \mathbf{p_B} - \mathbf{p_A} \]
+
+For either a fixed point $O$ or the centre of mass $G$, we obtain:
+
+\[ \mathbf{r} \times \mathbf{J} = \int_{t_A}^{t_B}\mathbf{q}dt = \mathbf{h_B} - \mathbf{h_A} \]
+
+The above equation is also known as the moment of the impulse, or the impulsive moment.
+
+\begin{definition}[Ideal impulse]
+    We say that an impulse is ideal if it is infinitesimally short, with $|\mathbf{F}| \to \infty$; the direction of $\mathbf{J}$ is the same as the direction of $\mathbf{F}$ and it does not change during the impact; and its magnitude is equal to $\int \mathbf{F}dt$.
+\end{definition}
+
+The general method of solving impacts with rigid bodies is:
+
+\begin{itemize}
+    \item Equate the change in linear momentum to impulsive forces at every point of contact, i.e.:
+    \[ \mathbf{J} = m(\mathbf{v} - \mathbf{u}) \]
+    \item Equate the sum of all the impulsive moments to the change in angular momentum. It is often simple to take moments about the centre of mass:
+    \[ \sum \mathbf{r_i} \times \mathbf{J_i} = I_G(\mathbf{\omega} - \mathbf{\omega_0}) \]
+    \item Use the coefficient of restitution or any other information the problem gives you.
+\end{itemize}
+
+These three steps ensure a complete system of equations for solving any impacts problem.
+
+\end{document}

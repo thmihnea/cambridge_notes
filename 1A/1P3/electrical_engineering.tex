@@ -592,8 +592,6 @@ By Ohm's law, we know that $v = iZ$, and therefore:
 
 By analizing the expression for the impedeance of an inductor, we observe that when $\omega \to 0$, the impedance is zero, the inductor effectively becoming a short-circuit. Hence, an inductor will pass DC current. For $\omega \to \infty$, we observe that $Z_L \to \infty$, therefore the inductors becomes an open circuit and effectively blocks AC signals when the frequency becomes very high.
 
-\end{proposition}
-
 \newpage
 
 \section{Analysis of circuits and devices}
@@ -959,13 +957,6 @@ One of the limitations of such first-order filters is that the slope of the stop
 \begin{proposition}[Series RLC circuit]
 We are now considering the case of resonance, i.e. when the system oscillates with its natural frequency. Consider a series RLC circuit. We wish to find what happens when the reactive elements cancel each other out.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{images/rlc.png}
-    \caption{RLC series circuit}
-    \label{fig:rlc-series}
-\end{figure}
-
 The impedance of this circuit is simply given by:
 
 \[ Z = R + j(\omega L - \frac{1}{\omega C}) \]
@@ -980,15 +971,15 @@ Therefore, the angular frequency at resonance is given by $\omega = \frac{1}{\sq
 
 \end{proposition}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/rlc.png}
+    \caption{RLC series circuit}
+    \label{fig:rlc-series}
+\end{figure}
+
 \begin{proposition}[Parallel RLC circuit]
     Consider a parallel RLC circuit. We wish the proceed just as in the previous example in order to determine the resonance condition for a parallel RLC circuit.
-
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.45\textwidth]{images/rlcpar.png}
-        \caption{RLC parallel circuit}
-        \label{fig:rlc-parallel}
-    \end{figure}
 
     Again, we can determine the complex impedance of the above circuit:
 
@@ -998,6 +989,13 @@ Therefore, the angular frequency at resonance is given by $\omega = \frac{1}{\sq
 
     \[ f = \frac{1}{2\pi\sqrt{LC}} \]
 \end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/rlcpar.png}
+    \caption{RLC parallel circuit}
+    \label{fig:rlc-parallel}
+\end{figure}
 
 \subsubsection{Q-factor and bandwidth}
 

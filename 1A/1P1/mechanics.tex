@@ -20,6 +20,7 @@
 % Add more macros as needed
 
 % Define theorems, propositions, definitions, etc. using thmtools
+\usepackage{mdframed} % For framing
 \declaretheoremstyle[
   spaceabove=6pt,
   spacebelow=6pt,
@@ -33,27 +34,49 @@
 
 \declaretheorem[
   style=mystyle,
-  name=Theorem,
-  within=section,
-]{theorem}
-
-\declaretheorem[
-  style=mystyle,
-  name=Proposition,
-  within=section,
-]{proposition}
-
-\declaretheorem[
-  style=mystyle,
-  name=Definition,
-  within=section,
-]{definition}
-
-\declaretheorem[
-  style=mystyle,
   name=Example,
   within=section,
 ]{example}
+
+% Define a framed theorem environment
+\newmdtheoremenv[
+  linecolor=black,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{proposition}{Proposition}
+
+\newmdtheoremenv[
+  linecolor=red,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{definition}{Definition}
+
+\newmdtheoremenv[
+  linecolor=red,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{theorem}{Theorem}
 
 \begin{document}
 

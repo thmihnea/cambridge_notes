@@ -27,6 +27,7 @@
 % Add more macros as needed
 
 % Define theorems, propositions, definitions, etc. using thmtools
+\usepackage{mdframed} % For framing
 \declaretheoremstyle[
   spaceabove=6pt,
   spacebelow=6pt,
@@ -40,27 +41,49 @@
 
 \declaretheorem[
   style=mystyle,
-  name=Theorem,
-  within=section,
-]{theorem}
-
-\declaretheorem[
-  style=mystyle,
-  name=Proposition,
-  within=section,
-]{proposition}
-
-\declaretheorem[
-  style=mystyle,
-  name=Definition,
-  within=section,
-]{definition}
-
-\declaretheorem[
-  style=mystyle,
   name=Example,
   within=section,
 ]{example}
+
+% Define a framed theorem environment
+\newmdtheoremenv[
+  linecolor=black,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{proposition}{Proposition}
+
+\newmdtheoremenv[
+  linecolor=red,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{definition}{Definition}
+
+\newmdtheoremenv[
+  linecolor=red,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{theorem}{Theorem}
 
 \begin{document}
 
@@ -1405,5 +1428,613 @@ In amorphous thermoplastics, the long-chain molecules are arranged entirely at r
     \caption{Elastomers and thermosets}
     \label{fig:enter-label}
 \end{figure}
+
+\newpage
+
+\section{Introductory solid mechanics}
+
+\subsection{Constitutive response. Elastic deformation}
+
+We are now going to move our attention towards the elastic deformation of solids.
+
+\begin{definition}[Poisson's ratio]
+    Recall that in uniaxial tension, the material gets longer and thinner, and the lateral contraction and the tensile extension are proportional. For this reason, we define Poisson's ratio as:
+
+    \[ \nu = -\frac{\text{Lateral strain}}{\text{Tensile strain}} \]
+\end{definition}
+
+Note that lateral strain is not due to volume conservation, but it actually reflects the way atomic bonds deform under a certain load. For crystalline materials, Poisson's ratio is within the range of $0.2 - 0.33$, for porous solids it is null, and for elastomers it is approximately $0.5$, which is the highest theoretical value it can have.
+
+\begin{proposition}[Hooke's law in 3D]
+    Consider a unit cube of material (representing any volume element in a uniformly loaded body), under a general set of stresses $(\sigma_1, \sigma_2, \sigma_3)$ on its three axes. Therefore, the strains for each axis are:
+
+    \[ \epsilon_1 = \frac{1}{E}(\sigma_1 - \nu\sigma_2 - \nu\sigma_3) \]
+    \[ \epsilon_2 = \frac{1}{E}(-\nu\sigma_1 + \sigma_2 -\nu\sigma_3) \]
+    \[ \epsilon_3 = \frac{1}{E}(-\nu\sigma_1 -\nu\sigma_2 + \sigma_3) \]
+\end{proposition}
+
+\begin{proof}
+    To prove Hooke's law in 3D, we first realize that the state of stress forms a linear system, and hence superposition is applicable. Consider the first axis (labeled 1), and consider the sole effect of $\sigma_1$ on it. The strain in the $1$ direction is:
+
+    \[ \epsilon_1 = \frac{\sigma_1}{E} \]
+
+    This is the tensile strain, as the stress is applied in the same direction. By the definition of Poisson's ratio, the lateral strain is given by:
+
+    \[ \epsilon_{2,3} = -\nu\epsilon_1 = -\frac{\nu\sigma_1}{E} \]
+
+    These are the strains imposed on each axis by the stress $\sigma_1$. By repeating the same procedure for each individual stress, and then by using linear superposition, Hooke's law in 3D is proved.
+\end{proof}
+
+\begin{proposition}[Dilatation]
+    When materials strain elastically, their volume changes. We define the dilatation as the volumetric strain, i.e.:
+
+    \[ \Delta = \frac{\Delta V}{V_0} = \epsilon_1 + \epsilon_2 + \epsilon_3 \]
+\end{proposition}
+
+\begin{proof}
+    Consider a unit cube, and a general strain state $(\epsilon_1, \epsilon_2, \epsilon_3)$, where the strains are much smaller than 1. Initial cube dimensions are $(1, 1, 1)$, and final dimensions are $(1 + \epsilon_1, 1 + \epsilon_2, 1 + \epsilon_3)$. Therefore, the final volume is:
+
+    \[ V = (1 + \epsilon_1)(1 + \epsilon_2)(1 + \epsilon_3) = 1 + \epsilon_1 + \epsilon_2 + \epsilon_3 + \mathcal{O}(\epsilon^2) \]
+
+    Since the initial volume is $V_0 = 1$, by applying the definition of the dilatation, the proof is complete.
+\end{proof}
+
+\begin{definition}[Hydrostatic stress]
+    A state of hydrostatic stress is when all three normal stresses are equal, i.e.:
+
+    \[ \sigma_1 = \sigma_2 = \sigma_3 \]
+
+    An example of this is under an external pressure $p$:
+
+    \[ \sigma_1 = \sigma_2 = \sigma_3 = -p \]
+\end{definition}
+
+\begin{proposition}[Bulk modulus]
+    The bulk modulus $K$ is defined as:
+
+    \[ K = \frac{\text{Hydrostatic stress}}{\text{Volumetric strain}} = \frac{E}{3(1 - 2\nu)} \]
+\end{proposition}
+
+\begin{proof}
+    Since the state of stress is hydrostatic, we may assume that:
+
+    \[ \sigma_1 = \sigma_2 = \sigma_3 = \sigma \]
+
+    By Hooke's law in 3D, we deduce that the strain in any of the axes' directions is:
+
+    \[ \epsilon = \frac{1}{E}(\sigma - \nu\sigma - \nu\sigma) = \frac{\sigma}{E}(1 - 2\nu) \]
+
+    Since the volumetric strain is $\Delta = \epsilon_1 + \epsilon_2 + \epsilon_3 = 3\epsilon$, because we are under hydrostatic loading, we deduce that the dilatation is:
+
+    \[ \Delta = 3\epsilon = \frac{3\sigma}{E}(1 - 2\nu) \]
+
+    By applying the definition:
+
+    \[ K = \frac{\sigma}{\Delta} = \frac{E}{3(1 - 2\nu)} \]
+\end{proof}
+
+Previously, we have defined normal stress as the force per unit area carried perpendicular to a plane within the material. However, it is useful to define the shear stress.
+
+\begin{definition}[Shear stress]
+    The shear stress $\tau$ is defined as the force per unit area carried parallel to a plane within the material.
+\end{definition}
+
+This type of stress distorts the shape of a volume element, rather than changing its axial dimensions - for this reason it is useful to define the shear strain. Because the changes are small, we can define it as the approximate angle (in radians) made with that specific plane.
+
+\begin{definition}[Shear strain]
+    The shear strain is defined as $\gamma = \frac{w}{l_0}$. Note that since we postulate that the modifications are small, we can approximate $\gamma \approx \tan{\gamma}$.
+\end{definition}
+
+\begin{definition}[Shear modulus]
+    The shear modulus $G$ characterizes the elastic stiffness in shear:
+
+    \[ G = \frac{\text{Shear stress}}{\text{Shear strain}} = \frac{\tau}{\gamma} \]
+
+    By means of elastic analysis, we can further deduce that:
+
+    \[ G = \frac{E}{2(1 + \nu)} \]
+
+    This result is, however, non-trivial, and is beyond the scope of this course.
+\end{definition}
+
+\subsection{Plastic properties}
+
+The typical response for a ductile metal is, as previously shown: (1) linear elastic behavior, (2) elastic limit - material reaches the yielding limit $\sigma_y$, (3) permanent plastic strain, (4) tensile strength and (5) necking - deformation localizes, and specimen fails.
+
+Previously we have defined the elastic stored energy as the area of the stress-strain curve until $\sigma_y$. This is equal to:
+
+\[ V = \frac{1}{2}\sigma_y\epsilon_y = \frac{\sigma_y^2}{2E} \]
+
+Likewise, the plastic work per unit volume is the area under the stress-strain curve, excluding the final elastic contribution, i.e.:
+
+\[ W = \int \sigma_n d\epsilon_n \]
+
+Although in elastic deformation, the volume is not conserved, it is, however, conserved in plastic deformation (until the point of necking). Therefore:
+
+\[ Al = A_0l_0 \]
+
+\begin{definition}[Hardness]
+    In compression testing, the hardness of a material is defined as:
+
+    \[ H = \frac{\text{Load}}{\text{Projected area of indent}} \approx 3\sigma_y \]
+
+    Note that this result is purely empirical.
+\end{definition}
+
+\begin{proposition}[True stress]
+    The true stress for an uniaxial load is:
+
+    \[ \sigma_t = \sigma_n(1 + \epsilon_n) \]
+
+    Where $\sigma_n$ and $\epsilon_n$ are the nominal stress and strain, respectively.
+\end{proposition}
+
+\begin{proof}
+    Because volume is conserved during plastic deformation, $A_0l_0 = Al \iff \frac{A_0}{A} = \frac{l}{l_0}$.
+    By definition, $\sigma_t = \frac{F}{A}$ and $\sigma_n = \frac{F}{A_0}$. Hence:
+
+    \[ \sigma_t = \frac{A_0}{A}\sigma_n = \frac{l}{l_0}\sigma_n \]
+
+    Because $\epsilon_n = \frac{l - l_0}{l_0} \iff \frac{l}{l_0} = 1 + \epsilon_n$. Therefore:
+
+    \[ \sigma_t = \sigma_n(1 + \epsilon_n) \]
+
+    Therefore, true stress is higher than nominal stress for positive stress values.
+\end{proof}
+
+\begin{proposition}[True strain]
+    The true strain of a material can be obtained by summing together all the individual contributions of strain, i.e. each $\frac{dl}{l}$. Therefore:
+
+    \[ \epsilon_t = \int_{l_0}^l \frac{1}{l}dl = \ln{\frac{l}{l_0}} \]
+
+    However, since $\frac{l}{l_0} = 1 + \epsilon_n$, we deduce that:
+
+    \[ \epsilon_t = \ln{\left(1 + \epsilon_n\right)} \]
+
+    Therefore, true strain is smaller than nominal strain for positive strain values.
+\end{proposition}
+
+\subsection{Stress analysis}
+
+Under uniaxial tension (or compression), all elastic materials strain laterally (due to Poisson's ratio). Let us now consider different cases when analyzing stresses is important.
+
+\subsubsection{Constrained deformation}
+
+\begin{proposition}[Constrained deformation]
+    Consider a cube of material fitted into a square-section slot in a rigid plate, and loaded with a compressive stress $\sigma_1$. We impose a constraint in the third direction, namely $\epsilon_3 = 0$ Because the material is only loaded in the first direction, $\sigma_2 = 0$. Note that the same cannot be said about $\sigma_3$, since the wall induces a compressive stress in the material. By Hooke's law in 3D:
+
+    \[ \epsilon_3 = 0 = \frac{1}{E}(-\nu\sigma_1 + \sigma_3) \]
+
+    This means that:
+
+    \[ \sigma_3 = \nu\sigma_1 \]
+
+    In the first direction:
+
+    \[ \epsilon_1 = \frac{1}{E}(\sigma_1 - \nu\sigma_3) \]
+
+    By combining both equations, we obtain:
+
+    \[ \epsilon_1 = \frac{\sigma_1(1 - \nu^2)}{E} \]
+
+    Therefore, we observe that:
+
+    \[ E' = \frac{\sigma_1}{\epsilon_1} = \frac{E}{1 - \nu^2} \]
+
+    The material effectively changes Young's modulus (it becomes stiffer) as to adjust for the constraint we imposed.
+\end{proposition}
+
+\subsubsection{Thermal deformation}
+
+\begin{proposition}[Thermal strain]
+    We define the thermal stress for a material in terms of the thermal expansion coefficient $\alpha$ and the absolute change in temperature $\Delta T$ as:
+
+    \[ \epsilon = \alpha\Delta T \]
+
+    The thermal stress can then be deduced by $\sigma = E\epsilon = E\alpha\Delta T$.
+\end{proposition}
+
+We must also note that in problems where measuring the thermal stress is key, it must be important to note the following relationship:
+
+\[ \epsilon_t + \epsilon_e + \epsilon_p = 0 \]
+
+Meaning that the thermal, elastic and plastic strains all cancel each other out.
+
+\begin{proposition}[Constrained surface layers]
+    Consider two different interfaces (surfaces) with thermal expansion coefficient $\alpha_1$ and $\alpha_2$. Then, the induced total strain will be:
+
+    \[ \epsilon_t = (\alpha_1 - \alpha_2)\Delta T \]
+
+    If $\alpha_1 > \alpha_2$, the top layer goes into tension. Otherwise, it goes into compression.
+\end{proposition}
+
+\newpage
+
+\section{Microstructure and properties}
+
+In this section of the course, we will discuss the microstructural properties of materials, and analyze these in terms of elasticity and plasticity.
+
+\subsection{Manipulation of elastic properties}
+
+As previously shown, in crystalline materials, atoms pack in a regularly repeating lattice structure. Most metals are commonly used as alloys, although some can also be used in pure form.
+
+\begin{definition}[Ceramic]
+    A ceramic material is a compound of a metal with silicon (Si) or other non-metals (such as $O_2$, $C$ or $N_2$).
+\end{definition}
+
+\begin{proposition}[Elastic response of metals and ceramics]
+    Primary bonds can be thought of as stiff springs. The gradient of the $F = F(r)$ response is called the bond stiffness $S$. For a small displacement from equilibrium:
+
+    \[ F = Su \]
+
+    The strain will also be equal to $\epsilon = \frac{u}{r_0}$, where $r_0$ is the equilibrium spacing of atoms. We can also obtain the stress:
+
+    \[ \sigma = \frac{Su}{r_0^2} \]
+
+    And hence, the Young's modulus is:
+
+    \[ E = \frac{\sigma}{\epsilon} = \frac{S}{r_0} \]
+
+    Therefore, the Young's modulus of a component directly reflects the bond stiffness and is a material property. The atomic response $F - u$ is linear, giving what we call as linear elasticity at a macro scale.
+\end{proposition}
+
+\begin{definition}[Alloys]
+    Alloys are mixtures of elements (typically metals), forming solid solutions and compounds.
+\end{definition}
+
+From the hard sphere model, solid solutions and compounds will form densities between those of the pure elements. Solid solutions contain a mixture of different bond stiffnesses  ($A-A, A-B, B-B$), and hence the Young's modulus of $A-B$ solutions will lie somewhere between pure $A$ and pure $B$. Note that compounds have stiffer bonds, and therefore a higher modulus - the stronger chemical bond is a major reason as to why the compound forms.
+
+\subsubsection{Polymer elasticity}
+
+We first note that we distinguish between three classes of polymers:
+
+\begin{enumerate}
+    \item Thermoplastics: polyethylene, polyvinylchloride, polypropylene, polystyrene
+    \item Thermosets: epoxies, phenolics, polyurethane
+    \item Elastomers: rubbers, neoprene
+\end{enumerate}
+
+Note that of the three classes of polymers mentioned above, only thermoplastics can be recycled. We will understand why this is the case in the following sections.
+
+\begin{definition}[Glass transition temperature]
+    In crystalline materials and glasses, the breaking of primary bonds by thermal energy gives a well-defined property, also known as the melting temperature $T_m$. In polymers, the weaker secondary (Van der Waals) bonds are overcome by thermal energy at a lower temperature. This is known as the glass transition temperature $T_g$. This is the temperature at which the polymer becomes rigid and glassy.
+\end{definition}
+
+\begin{definition}[Amorphous polymers]
+    We say that a polymer is amorphous if its molecular structure is entangled, i.e. it is formed by randomly distributed atoms.
+\end{definition}
+
+Above the glass transition temperature, the behaviour of polymers differs:
+
+\begin{enumerate}
+    \item Amorphous thermoplastics melt to a viscous liquid (the entangled molecules slide over one another)
+    \item In semi-crystalline thermoplastics, the amorphous regions melt, but the crystalline regions survive up until a higher melting point $T_m$, above which a viscous liquid forms
+    \item In elastomers and thermosets, the secondary bonds melt at $T_g$, but the cross-links do not - on heating, the polymer does not melt, but decomposes or burns
+\end{enumerate}
+
+\subsubsection{Manipulating elastic properties}
+
+\begin{definition}[Foam]
+    A foam is a porous solids. Note that porous, cellular solids are found extensively in nature (e.g. wood).
+\end{definition}
+
+\begin{proposition}[Young's modulus for a foam]
+    Consider an idealised unit of material where the elastic response is dominated by the bending of the solid ligaments. Then:
+
+    \[ \frac{E_f}{E_s} = \left(\frac{\rho_f}{\rho_s}\right)^2 \]
+
+    Where $(E_f, \rho_f)$ are the foam's properties, and $(E_s, \rho_s)$ are the properties of the solid material used.
+\end{proposition}
+
+\begin{definition}[Composite]
+    Composite materials combine two different materials to produce new property profiles, exploiting separate qualities of the individual components.
+\end{definition}
+
+Composites are defined by the volume fraction $V_f$ of one of the components, which represents the volume of that component relative to the total volume. The density of the composite can be approximated by:
+
+\[ \rho_c = \rho_f V_f + \rho_m (1 - V_f) \]
+
+\begin{proposition}[The Voigt-Reuss equations]
+    Consider a composite made of a particulate fiber and a matrix. Then, we can deduce the upper and lower bounds for the predicted Young's Modulus. The upper bound is given by the longitudinal modulus (parallel to layers):
+
+    \[ E_c = V_fE_f + (1 - V_f)E_m \]
+
+    The lower bound is given by the transverse modulus (perpendicular to layers);
+
+    \[ E_c = \left(\frac{V_f}{E_f} + \frac{1 - V_f}{E_m}\right)^{-1} \]
+
+    Note that this is true for isotropic materials (equivalent response in all directions).
+\end{proposition}
+
+\subsection{Manipulation of plastic properties}
+
+\begin{definition}[Strength]
+    We define the strength of a material as the nominal stress at the elastic limit.
+\end{definition}
+
+There are different ways in which materials respond to tensile tests:
+
+\begin{enumerate}
+    \item Brittle materials (in tension): fracture occurs at the elastic limit due to cracks, giving a tensile strength
+    \item Brittle materials (in compression): crushing occurs, giving a compressive stress - this is due to the fact that cracks form, and by compressing the material, the gaps are closed
+    \item Ductile materials (e.g. metals), in either tension and compression, have their strength defined as the yield stress $\sigma_y$
+\end{enumerate}
+
+\subsubsection{Atomic basis of plasticity in crystalline materials}
+
+The atomic bonding in crystalline materials is strong and primary: metallic, ionic or covalent. Elastic deformation displaces atoms by a fraction of their equilibrium spacing, whereas plastic deformation involves relative movement of material over very large multiples of the atomic spacing.
+
+\begin{proposition}[Ideal strength of crystalline materials]
+    The ideal strength is the notional tensile stress which would cause simultaneous rupture of the inter-atomic bonds across the whole sample.  This occurs when the load on the atoms reaches the maximum in the atomic force-separation curve. As the material deforms, atoms must overcome a periodic energy potential:
+
+    \[ U(x) = U_0\cos{\frac{2\pi x}{b}} \]
+
+    Where $b$ is called the Burgers vector. We know that in a force field, $\mathbf{F} = -\nabla\mathbf{V}$. Therefore:
+
+    \[ F(x) = \frac{2\pi U_0}{b}\sin{\frac{2\pi x}{b}} \]
+
+    If we label $N_x$ as the number of atoms per unit area, then the maximum shear stress required to overcome the energy barrier is:
+
+    \[ \tau_0 = \frac{2\pi U_0N_x}{b} \]
+
+    The magnitude of this shear force must depend on the material itself. At small strains, the force required to displace atoms follows linear elasticity, and the shear strain is:
+
+    \[ \gamma = \frac{x}{b} \]
+
+    Since the shear modulus $G$ is defined as $G = \lim_{\gamma \to 0} \frac{\partial\tau}{\partial\gamma}$, we conclude that:
+
+    \[ \tau_0 = \frac{G}{2\pi} = \frac{E}{4\pi(1 + \nu)} \]
+
+    The maximum shear stress occurs when $\sigma = 2\tau$ (proved in an earlier section). Therefore, the ideal stress is:
+
+    \[ \sigma_y = \frac{E}{2\pi(1 + \nu)} \]
+\end{proposition}
+
+Note that this is only an estimate of the ideal strength of a material. However, in reality, the strength of a material is orders of magnitude lower than this estimate - our goal is to now investigate why this occurs.
+
+\begin{definition}[Dislocations]
+    A dislocation is a line defect in a crystal which can move over a slip-plane in the lattice under an applied shear stress.  Dislocations concentrate the applied stress on a small proportion of the bonds, so plastic deformation takes place one row of atoms at a time at a stress which is much lower than the ideal strength. Yielding therefore occurs by very many tiny increments of shear between the blocks of crystal on either side of the slip planes.  The magnitude of the incremental displacement is called the Burgers vector $b$. 
+\end{definition}
+
+To accommodate  for this atomic displacement, part of the interface between the top and bottom half of the crystal slipped, and part has not. The top half contains an extra half-plane of atoms. 
+
+Consider a dislocation moving right through a block of material. This gives a net displacement between the material above and below the slip plane. The slip step produced by the passage of one single dislocation is the Burgers vector, and dislocations enable incremental slip by extending a few  bonds at a time. This is specifically why the stress required is much less than the ideal strength.
+
+There are different types of dislocations:
+
+\begin{enumerate}
+    \item Edge dislocations - the shear stress and Burgers vector are both at right angles to the dislocation line, but they all move in the same direction
+    \item Screw dislocations - the shear stress and Burgers vector are  both parallel to the dislocation line, but they move perpendicular to one another
+    \item Mixed dislocations - these are curved dislocations, varying between pure edge and pure screw
+\end{enumerate}
+
+Note that the same slip step is produced for both edge and screw dislocations. For mixed dislocations, the net effect remains a slip step in the direction of the shear stress.
+
+\begin{proposition}[Dislocation resistance per unit length]
+    The dislocation resistance per unit length (force per unit length) is given by:
+
+    \[ f = \tau b \]
+
+    Where $\tau$ is the shear stress and $b$ is the Burgers vector.
+\end{proposition}
+
+\begin{proposition}[Line tension]
+    Atoms around a dislocation are displaced from their equilibrium spacing, and thus have a higher energy. The energy (per unit length, actually a force) $T$ is given by the elastic stress-strain field around the dislocation core:
+
+    \[ T = \frac{1}{2}Gb^2 \]
+
+    Where $G$ is the shear modulus and $b$ is the Burgers vector.
+\end{proposition}
+
+\begin{proposition}[Dislocation pinning]
+    When a gliding dislocation meets obstacles in its slip plane, it is pinned by the obstacles and is forced to bow out between them, increasing the resistance per unit length, and an additional shear stress $\Delta\tau$ is required to overcome this resistance.
+
+    The total force on an obstacle is given by:
+
+    \[ F = 2T\cos{\theta} \]
+
+    We say that an obstacle is weak if $\theta > 0$. Otherwise, we say that the obstacle is strong.
+
+    We know that the resistance is $f = \tau b$. Therefore, the additional resistance encountered is:
+
+    \[ \Delta f = \Delta \tau b \]
+
+    For a projected length $L$ of dislocation between obstacles, the force is:
+
+    \[ F = \Delta\tau bL \]
+
+    However, the force is $F = 2T\cos{\theta}$. Therefore:
+
+    \[ 2T\cos{\theta} = \Delta\tau bL \iff Gb^2\cos{\theta} = \Delta\tau bL \]
+
+    Therefore, the additional shear stress required to surpass an obstacle is:
+
+    \[ \Delta\tau = \frac{Gb}{L}\cos{\theta} \]
+
+    Where $G$ is the shear modulus, $b$ is the Burgers vector, $L$ is the obstacle spacing, and $\cos{\theta}$ is the obstacle strength.
+ \end{proposition}
+
+\begin{definition}[Casting]
+    Casting is a process by which solidification occurs by nucleation and growth of tiny solid crystals. These will randomly grow until they impinge, forming grains.
+\end{definition}
+
+\begin{definition}[Re-crystallisation]
+    Grains reform in the solid state by heat treatment following the previous deformation.
+\end{definition}
+
+Between the remote shear stress $\tau$ and the shear stress needed to move dislocations $\tau_y$, the following relationship holds: $\tau = \frac{3}{2}\tau_y$. By taking note that $\sigma_y = \frac{\tau}{2}$ at $\frac{\pi}{4}$ inclination, then:
+
+\[ \sigma_y = 3\tau_y \]
+
+\begin{definition}[Dislocation length per unit volume]
+    We define the dislocation length per unit volume as:
+
+    \[ \rho_d = \frac{L}{V} \]
+
+    Where $L$ is the length of dislocations and $V$ is the volume of the sample. Note that dislocation density rises with strain, reducing the spacing and increasing the resistance.
+\end{definition}
+
+\begin{definition}[Work hardening]
+    Work hardening is a process by which materials are deformed (e.g. rolling, wire drawing, cold rolling) to increase the dislocation density while shaping the product. This increases the strength of the material.
+\end{definition}
+
+In work hardening, the spacing between dislocations is given by:
+
+\[ L = \frac{1}{\sqrt{\rho_d}} \]
+
+Because of this, the increase in yield stress is proportional to $Gb\sqrt{\rho_d}$.
+
+\begin{definition}[Solid solution hardening]
+    Solid solution hardening is a process by which solute atoms are added into the material (interstitial solid solutions) to provide a weak obstacle to dislocations, which bow out until the line tension pulls the dislocation past the solute atom. This is generally done through casting.
+
+    Note that the increase in yield stress is proportional to $\sqrt{C}$, so the spacing between dislocations is proportional to $\frac{1}{\sqrt{C}}$.
+\end{definition}
+
+\begin{definition}[Precipitation hardening]
+    When compounds are distributed as small particles within a lattice, they provide pinning points for dislocations. Particles can be introduced in different ways, but the hardening is referred to generally as precipitation hardening. The increase in yield stress is on the order of $10 \times$, and these particles act as strong obstacles for dislocations ($\theta = 0$).
+
+    The increase in yield stress is:
+
+    \[ \Delta\sigma_y = \frac{3Gb}{L} \]
+\end{definition}
+
+\subsubsection{Failure of polymers}
+
+Polymer strength is determined by the ability of the chain molecules to unravel and slide, temperature, strain-rate, crystallinity (in thermoplastics) and cross-links (in thermosets and elastomers). The potential barrier approximation we have done above works well for polymers, however note that it is not a fair approximation due to the fact that we have assumed primary bonding - polymers have secondary bonds.
+
+\begin{proposition}[Behaviour of thermoplastics]
+    Below $T_g$, thermoplastics are elastic-brittle, and above $T_g$, they are elastic-plastic.
+
+    \begin{enumerate}
+        \item If $T < T_g$, we have an elastic-brittle response - chain sliding is limited, and brittle fracture occurs from inherent flaws in the material. There is little to no ductility
+        \item If $T > T_g$, chain mobility increases around $T_g$ as secondary bonds melt, and yielding takes place by crazing, shear yielding or cold drawing
+    \end{enumerate}
+
+    In crazing, microcracks open in tension, bridged by stiff fibres of material with aligned molecules, preventing immediate fracture. In shear yielding, shear bands form and are stabilised by the alignment of molecules, giving greater ductility. In cold drawing, necking occurs - but the neck is stable: the molecules align in the neck and strengthen it, so the neck spreads along the specimen - there is perfect plastic deformation until the point of fracture.
+\end{proposition}
+
+\begin{proposition}[Behaviour of thermosets and elastomers]
+    Below $T_g$, both thermosets and elastomers are elastic-brittle. However, above $T_g$, for thermosets there is limited shear yielding (deforms slightly plastically, then fractures). Elastomers are non-linear elastic - they feature very high elastic strains until failure, and have little or no ductility - past the elastic limit, they fail by brittle fracture.
+\end{proposition}
+
+\newpage
+
+\section{Fracture mechanics}
+
+In this section of the course, we will now cover fracture mechanics, and later on - Weibull statistics.
+
+\subsection{Brittle fracture}
+
+\begin{proposition}[Stress concentration factor]
+    Consider an elliptical crack in the middle of a rectangular region, of major axis $a$. Then, if we apply a remote stress $\sigma_0$, the maximum stress is concentrated at the edge (tip) of the flaw and is given by:
+
+    \[ \frac{\sigma_{\text{max}}}{\sigma_0} = 1 + 2\sqrt{\frac{a}{r}} > 1 \]
+
+    Where $2a$ is the crack length and $r$ is the radius of curvature of the tip. This equation is only valid for blunt features (circular/elliptical holes). Note that if we are dealing with a circle, $a = r$ and this implies that the maximum stress is $3\sigma_0$.
+
+    Note that this gives an approximation of the maximum stress at the edge of a crack - this shows us that the crack suffers from much larger stresses than the remote applied stress to the sample.
+\end{proposition}
+
+\begin{proposition}[Strain energy release rate]
+    The strain energy release rate is the rate at which the stored elastic energy is released with respect to the creation of new crack area. It is given by:
+
+    \[ G = \frac{\pi\sigma_0^2a}{E} \]
+
+    Where $2a$ is the crack length  and $\sigma_0$ is the remote stress.
+\end{proposition}
+
+\begin{proof}
+    As previously shown, the stored elastic energy per unit volume is:
+
+    \[ U = \frac{\sigma_0^2}{2E} \]
+
+    Therefore, the energy released when the crack extends by $da$ must be given by $dW = UdV$. Hence:
+
+    \[ dW = \frac{\sigma_0^2}{2E} 4\pi a t da = \frac{2\sigma_0^2 \pi a t da}{E} \]
+
+    Since the crack area is $dA = 2t da$, by equating $G = \frac{dW}{dA}$, we obtain the required formula.
+\end{proof}
+
+\begin{definition}[Stress intensity factor]
+    By the analisys of the stress field around a crack, we can deduce that:
+
+    \[ \sigma_{yy} = \frac{K}{\sqrt{2\pi x}} \]
+
+    Where $K$ is the stress intensity factor and $x$ is the distance from the $Y-Y$ axis. It is a measure of the crack tip loading. This dependence is often put in the form:
+
+    \[ K = Y\sigma\sqrt{\pi a} \]
+
+    Where $Y$ is a dimensionless constant and $a$ is a unit of length.
+\end{definition}
+
+\begin{example}
+    The Materials databook gives values of $Y$ for many different geometries. For instance, for a centre crack of length $2a$, we can define $K$ as:
+
+    \[ K = \sigma\sqrt{\pi a} \]
+
+    Where we use $a$ as the radius (semi-length) of the feature. Note, again, that $K$ is only defined for sharp features.
+
+    For an edge crack, we use the total length of it (in a semi-infinite plane):
+
+    \[ K = 1.12\sigma\sqrt{\pi a} \]
+
+    Note that here we use the full length of the feature.
+\end{example}
+
+\begin{proposition}[Uniting the stress and energy approaches]
+    Fracture is expected when $K$ and $G$ reach a critical value, the critical stress intensity factor $K_{IC}$ and the critical strain energy release rate $G_{IC}$. Note that $K_{IC}$ is often named the fracture toughness, whereas $G_{IC}$ is the fracture energy. Therefore, for fracture:
+
+    \[ K \geq K_{IC}    \text{    and    }    G \geq G_{IC} \]
+
+    Moreover, the following relationship holds:
+
+    \[ K = \sqrt{EG} \]
+
+    This is also true for $K_{IC}$ and $G_{IC}$.
+\end{proposition}
+
+Note that the subscript $I$ denotes that these critical values are for the mode I of crack loading. Note that Mode I is the opening mode, where the crack surface is displaced normal to the surface. Mode II is the sliding or in-plane shear mode, where the two surface slide over each other. Mode III is the tearing mode, where shearing is done in another plane rather than the tangent one.
+
+\subsection{Ductile fracture}
+
+A central issue in fracture of ductile materials concerns the plastic flow at the crack tip. Plasticity raises the radius of curvature at the crack tip and reduces the stress concentration effect.
+
+The stress concentration at the crack tip:
+
+\begin{enumerate}
+    \item Stimulates plasticity
+    \item Blunts the crack tip
+    \item Reduces the stress (usually to $\approx \sigma_y$)
+    \item Has extensive energy absorption
+\end{enumerate}
+
+\begin{proposition}[Crack tip process zone]
+    The size of the process zone is given by:
+
+    \[ r_P = \frac{K_{IC}^2}{\pi\sigma_y^2} \]
+
+    Note that the stress intensity factor $K$ can be used to predict fracture if the process zone size $r_P$ is small compared with the specimen and crack dimensions. Otherwise, when $r_P$ is on the order of the crack length, the stresses in the process zone are no longer characterized only by $K$.
+\end{proposition}
+
+In general, as $\sigma_y$ increases, $K_{IC}$ goes down. At lower temperatures, dislocations are less mobile, and the fracture toughness falls. Note that the fracture toughness $K_{IC}$ is the resistance to crack propagation, which is also equal to the loss in potential energy.
+
+\subsection{Micro-mechanisms of fracture}
+
+\begin{proposition}[Fracture in metals]
+    Plasticity concentrates stress on inclusions, nucleating voids that grow and coalesce, ultimately causing ductile fracture.
+    In brittle fracture, the energy absorbed is likely to be relatively low, and the fracture surface shows little evidence of extensive plastic flow.
+\end{proposition}
+
+\begin{proposition}[Fracture in ceramics]
+    Fracture in ceramics is dominated by their brittle nature. Failure starts from flaws or pores which are introduced during processing. Fracture may occur either through grains (transgranular) or along the grain boundaries (intergranular).
+
+    Tensile failure occurs from the "worst flaw". We can, therefore, deduce that:
+
+    \[ \sigma_t = \frac{K_{IC}}{Y\sqrt{\pi a_{\text{max}}}} \]
+
+    Note that, as before, we use the full length of an edge crack or the semi-length of a centre crack.
+
+    Compressive failure is initiated in Mode II (in-plane shear) - this will occur on the planes of maximum shear stress, which are those at $\frac{\pi}{4}$ to the loading axis. Failure under compression requires a much higher driving force than in tension - mainly due to frictional work being done behind the crack tip as asperities on the crack flanks slide over each other. This is also why the compressive strength of brittle materials is usually much greater than the tensile strength. Therefore, ceramics are weak in tension, and strong in compression.
+\end{proposition}
 
 \end{document}

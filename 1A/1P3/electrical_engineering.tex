@@ -25,7 +25,7 @@
 \newcommand{\bbR}{\mathbb{R}} % Example: Real numbers
 % Add more macros as needed
 
-% Define theorems, propositions, definitions, etc. using thmtools
+\usepackage{mdframed} % For framing
 \declaretheoremstyle[
   spaceabove=6pt,
   spacebelow=6pt,
@@ -39,27 +39,49 @@
 
 \declaretheorem[
   style=mystyle,
-  name=Theorem,
-  within=section,
-]{theorem}
-
-\declaretheorem[
-  style=mystyle,
-  name=Proposition,
-  within=section,
-]{proposition}
-
-\declaretheorem[
-  style=mystyle,
-  name=Definition,
-  within=section,
-]{definition}
-
-\declaretheorem[
-  style=mystyle,
   name=Example,
   within=section,
 ]{example}
+
+% Define a framed theorem environment
+\newmdtheoremenv[
+  linecolor=black,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{proposition}{Proposition}
+
+\newmdtheoremenv[
+  linecolor=red,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{definition}{Definition}
+
+\newmdtheoremenv[
+  linecolor=red,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{theorem}{Theorem}
 
 \begin{document}
 
@@ -399,6 +421,7 @@ This formula is, however, not limited to a resistor. Any linear electrical compo
 \[ v = iZ \]
 
 Where $Z$ is the impedance of the component.
+\end{proposition}
 
 \begin{proposition}[Impedance of a capacitor]
     Consider that a voltage of the type $v(t) = re^{j\omega t}$ is applied to each end of a capacitor, where $j^2 = -1$ (we use a complex exponential to include both a magnitude and a phase for our signal). We know that $dq = Cdv$ and that $i = \frac{dq}{dt}$. Therefore:
@@ -1348,5 +1371,187 @@ Now, just as before, $V_{DS} = V_D - V_S \iff V_D = V_{DS} + V_S$. Hence:
 \[ V_{DD} - V_D = I_DR_D \iff R_D = \frac{V_{DD} - V_D}{I_D} \]
 
 Lastly, we can determine both $R_1$ and $R_2$ from the first equation if we know either one of them, or any type of further information. If we do not know anything about the two resistors, we can simply set $R_2 = 1M\Omega$ and determine $R_2$.
+
+\newpage
+
+\subsection{The small signal model (SSM)}
+
+As we have now looked into how to setup the biasing (quiescent) point for a MOSFET, we are now interested in further analyzing such circuits' properties. To do so, we will consider what happens when the operating point becomes slightly shifted, i.e. when a small AC signal is going to be applied at the input.
+
+We know that any change in $I_D$ is due to either a change in $V_{DS}$ or $V_{GS}$, as those can be the only parameters that influence the drain current. By considering the $I_D = I_D(V_{DS})$ characteristic we discussed prior, one can deduce that by keeping $V_{DS}$ constant and by changing $V_{GS}$, we obtain:
+
+\[ \Delta I_D \approx \frac{\partial I_D}{\partial V_{GS}} \Delta V_{GS} \]
+
+Now, by changing $V_{DS}$ and keeping $V_{GS}$ constant, we obtain:
+
+\[ \Delta I_D \approx \frac{\partial I_D}{\partial V_{DS}} \Delta V_{DS} \]
+
+By summing the two contributions together, the approximate change in $I_D$ due to a shift in both voltages is equal to:
+
+\[ \Delta I_D = \frac{\partial I_D}{\partial V_{DS}}\Delta V_{DS} + \frac{\partial I_D}{\partial V_{GS}} \Delta V_{GS} \]
+
+Since the shift in both waveforms is due to an AC signal, we will define the following new quantities:
+
+\begin{enumerate}
+    \item $i_d = \Delta I_D$, the drain current
+    \item $v_{gs} = \Delta V_{GS}$, the gate-source voltage
+    \item $v_{ds} = \Delta V_{DS}$, the drain-source voltage
+    \item $g_m = \frac{\partial I_D}{\partial V_{GS}}$, the mutual conductance
+    \item $\frac{1}{r_d} = \frac{\partial I_D}{\partial V_{DS}}$, the drain resistance
+\end{enumerate}
+
+By using this newly established notation, we can now obtain the small signal model equation.
+
+\begin{proposition}[The small signal model equation]
+    Any biased DC FET circuit can be represented in the small signal model equivalent as:
+
+    \[ i_d = \frac{v_{ds}}{r_d} + g_mv_{gs} \]
+
+    Note that this equation simply degenerates into Kirchhoff's current law, i.e. the equation above implies a node into which the drain current comes in, and two currents come out.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.4\textwidth]{images/ssm1.png}
+    \caption{The small signal model equivalent circuit}
+    \label{fig:ssm-1}
+\end{figure}
+
+When transforming a DC FET circuit into its small signal model equivalent, we always starts by drawing the gate, source, and drain, with the aforementioned parameters as in the drawing above. Any ideal voltage source we add is simply represented as a short-circuit, because they do not have any resistance. Note that the line on the bottom is the ground. After that has been done, we can simply add all other circuit elements to their initial position.
+
+Then, we can calculate the input resistance, which should be straightforward, and the output resistance. To compute the output resistance, we proceed as for amplifiers - we always short the input, and determine the resistance at the output following our short (as some components might be shorted due to this).
+
+\newpage
+
+\section{A.C. Power and Transformers}
+
+In this section, we will cover the mini-series of lectures covering power in A.C. circuits and transformers respectively.
+
+\subsection{A.C. Power}
+
+Let us consider the case where we have a voltage source with r.m.s. value $V$ that induces an r.m.s. current $I$ in a linear unspecified load. We can assume that:
+
+\[ v(t) = V_p\cos{(\omega t + \alpha)} \]
+\[ i(t) = I_p\cos{(\omega t + \beta)} \]
+
+\begin{definition}[Instantaneous power]
+    We define the instantaneous power $p = p(t)$ of a circuit as:
+
+    \[ p(t) = v(t)i(t) \]
+\end{definition}
+
+By the above definition, we can work out that:
+
+\[ p(t) = V_pI_p\cos{(\omega t + \alpha)}\cos{(\omega t + \beta)} \]
+
+By transforming the product of cosines into a sum, we deduce that:
+
+\[ p(t) = \frac{V_PI_P}{2}(\cos{(2\omega t + \alpha + \beta)} + \cos{(\alpha - \beta)}) \]
+
+By substituting to r.m.s. values, we can now get rid of the fraction. This yields:
+
+\[ p(t) = VI(\cos{(2\omega t + \alpha + \beta)} + \cos{(\alpha - \beta)}) \]
+
+The average value of the first cosine function over a period $T$ is zero (this can be found by means of integration). Since the second cosine term is constant, we deduce that the average power supplied to the load is given by:
+
+\[ P = VI\cos{(\alpha - \beta)} \]
+
+By defining $\phi$ as the phase difference between the voltage and the current, this can be rewritten as:
+
+\[ P = VI\cos{\phi} \]
+
+This is called the real power of the circuit. Note that the term $\cos{\phi}$ is called the power factor.
+
+\begin{proposition}
+    Consider a circuit that supplies a linear load and consider the power factor of said circuit.
+
+    \begin{enumerate}
+        \item $\phi > 0 \Rightarrow $ lagging power factor (typical of inductive loads)
+        \item $\phi < 0 \Rightarrow $ leading power factor (typical of capacitive loads)
+        \item $\phi = 0 \Rightarrow $ resistive load
+    \end{enumerate}
+\end{proposition}
+
+\begin{definition}[Reactive power]
+    The reactive (imaginary/complex) power of a circuit is defined as:
+
+    \[ Q = VI\sin{\phi} \]
+\end{definition}
+
+\subsubsection{Power for different circuit elements}
+
+We will now look at resistors, inductors and capacitors, and determine the A.C. power that characterisez them.
+
+\begin{proposition}[Power of a resistor]
+    The power of a resistor is $P = VI$.
+\end{proposition}
+
+\begin{proof}
+    The proof to this is trivial - since all elements are real (we are in D.C.), the power factor is 1, i.e. $\phi = 0 \iff \cos{\phi} = 1$, so $P = VI$ and $Q = 0$.
+\end{proof}
+
+\begin{proposition}[Power in an inductor]
+    Consider an A.C. circuit with angular frequency $\omega$ and an inductor of inductance $L$. Then, for an inductor:
+
+    \[ P = 0, Q = I^2X_L = \frac{V^2}{X_L} \]
+
+    Where $X_L = \omega L$.
+\end{proposition}
+
+\begin{proof}
+    The complex impedance of an inductor is $Z_L = jX_L$, therefore $\phi = \frac{\pi}{2}$. By applying the definitions of real and reactive power, we obtain the result. Note that an inductor only consumes reactive power.
+\end{proof}
+
+\begin{proposition}[Power in a capacitor]
+    Consider an A.C. circuit with angular frequency $\omega$ and a capacitor of capacitance $C$. Then, for the capacitor:
+
+    \[ P = 0, Q = -VI = -I^2X_C = -\frac{V^2}{X_C} \]
+\end{proposition}
+
+\begin{proof}
+    To prove this proposition, we proceed as before. The impedance of a capacitor is $Z_C = -jX_C$, and therefore $\phi = -\frac{\pi}{2}$. By applying the definitions, we obtain the results.
+\end{proof}
+
+\begin{definition}[Apparent power]
+    Let us consider two waveforms of the type:
+
+    \[ v = Ve^{j\alpha} \]
+    \[ i = Ie^{j\beta} \]
+
+    Where $V$ and $I$ are the r.m.s. values of the current and voltage. The complex conjugate of the current becomes:
+
+    \[ i^* = Ie^{-j\beta} \]
+
+    Therefore:
+
+    \[ vi^* = VIe^{j(\alpha - \beta)} \]
+
+    We obtain that:
+
+    \[ vi^* = VI\cos{\phi} + jVI\sin{\phi} = P + jQ \]
+
+    Therefore, this is the complex apparent power. The modulus of this quantity is called the apparent power and is defined as:
+
+    \[ S = \sqrt{P^2 + Q^2} \]
+
+    From this, we can now deduce that $\cos{\phi} = \frac{P}{S}$, $\sin{\phi} = \frac{Q}{S}$, and that $\tan{\phi} = \frac{Q}{P}$ - this is the power triangle.
+\end{definition}
+
+\begin{proposition}[Conservation of power]
+    In any linear circuit, both the real and reactive power are conserved, i.e.:
+
+    \[ P = \sum_{i = 1}^n P_i \]
+    \[ Q = \sum_{i = 1}^n Q_i \]
+\end{proposition}
+
+Note that real power is measured in Watts (W), reactive power is measured in Volt-Amps reactive (VARs), and apparent power is measured in Volt-Amps (VA). These quantities cannot be added together.
+
+\begin{proposition}[Power factor correction]
+    Suppose a load has a power factor $\cos{\phi} < 1$. For maximum power usage, and for minimizing power lost, we want to have $\cos{\phi} = 1$. Therefore, we will add a parallel capacitor to the load, with the condition that the reactive power of the capacitor is equal to the reactive power of the load, i.e.:
+
+    \[ Q_L = -\frac{V^2}{X_C} \iff X_C = -\frac{V^2}{Q_L} \]
+
+    And using this equation, we can deduce the value of capacitance needed in order for us to be able to fully optimize our power usage.
+\end{proposition}
 
 \end{document}

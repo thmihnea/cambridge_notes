@@ -1,0 +1,95 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{fancyhdr}
+\usepackage{lipsum} % for generating dummy text, you can remove this line in your actual document
+\usepackage[margin=1in, bottom=1.5in]{geometry} % Adjust bottom margin as needed
+\usepackage{thmtools}
+\usepackage{listings}
+\usepackage{hyperref}
+
+% Page style settings
+\pagestyle{fancy}
+\fancyhf{} % Clear header and footer
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead[C]{\textbf{\large 1A - Vibrations}}
+\fancyfoot[C]{\thepage}
+
+% Macros for convenience
+\newcommand{\bbR}{\mathbb{R}} % Example: Real numbers
+% Add more macros as needed
+
+% Define theorems, propositions, definitions, etc. using thmtools
+\usepackage{mdframed} % For framing
+\declaretheoremstyle[
+  spaceabove=6pt,
+  spacebelow=6pt,
+  headfont=\bfseries,
+  notefont=\normalfont,
+  bodyfont=\normalfont,
+  headpunct={},
+  postheadspace=1em,
+  qed=,
+]{mystyle}
+
+\declaretheorem[
+  style=mystyle,
+  name=Example,
+  within=section,
+]{example}
+
+% Define a framed theorem environment
+\newmdtheoremenv[
+  linecolor=black,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{proposition}{Proposition}
+
+\newmdtheoremenv[
+  linecolor=red,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{definition}{Definition}
+
+\newmdtheoremenv[
+  linecolor=red,
+  linewidth=1pt,
+  topline=true,
+  bottomline=true,
+  rightline=true,
+  leftline=true,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerrightmargin=10pt,
+  innerleftmargin=10pt
+]{theorem}{Theorem}
+
+\begin{document}
+
+\title{Engineering Tripos Part IA - Mechanical Vibrations}
+\author{Morărescu Mihnea-Theodor}
+\date{\today}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\end{document}

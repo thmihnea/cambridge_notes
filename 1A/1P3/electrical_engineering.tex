@@ -1419,6 +1419,12 @@ When transforming a DC FET circuit into its small signal model equivalent, we al
 
 Then, we can calculate the input resistance, which should be straightforward, and the output resistance. To compute the output resistance, we proceed as for amplifiers - we always short the input, and determine the resistance at the output following our short (as some components might be shorted due to this).
 
+Furthermore, if we are interested in calculating the input resistance, this is always going to be equal to the grouping of impedances/resistors between the gate and the ground. If we want to calculate the gain, we need to use:
+
+\[ v_\text{in} = v_\text{gs} + v_s \]
+
+Then, we need to use nodal at either (or both) $D$ and $S$. Lastly, if we are interested in finding the output resistance, we must short the input (let $v_\text{gs} = 0$), and apply a voltage $v_x$ and a current $i_x$ to the output.
+
 \newpage
 
 \section{A.C. Power and Transformers}
@@ -1551,5 +1557,425 @@ Note that real power is measured in Watts (W), reactive power is measured in Vol
 
     And using this equation, we can deduce the value of capacitance needed in order for us to be able to fully optimize our power usage.
 \end{proposition}
+
+\newpage
+
+\subsection{Transformers}
+
+The basic principle of a transformer is that the first coil (i.e., the primary) is connected to a voltage source. The second coil, however, is linked by a varying flux.
+
+\[ v_1(t) \to i_1(t) \to \phi (t) \]
+
+And, according to Faraday:
+
+\[ v_2(t) = N \frac{d\phi}{dt} \] 
+
+\subsubsection{The ideal transformer}
+
+We will now list the properties of an ideal transformer, in order, and make various assumptions regarding how we model it.
+
+\begin{proposition}
+    Iron is a perfect conductor of flux. This means that the reluctance of iron is null, and hence:
+
+    \[ \frac{I_2}{I_1} = \frac{N_1}{N_2} \]
+\end{proposition}
+
+\begin{proposition}
+    All the flux linking the primary coil also links the secondary coil (there is no flux leakage). This means that, since $e_1 = N_1\frac{d\phi}{dt}$ and $e_2 = N_2\frac{d\phi}{dt}$, we obtain that:
+
+    \[ \frac{e_1}{N_1} = \frac{e_2}{N_2} \] 
+\end{proposition}
+
+\begin{proposition}
+    All winding resistances are negligible. This means that $e_1 = v_1$ and $e_2 = v_2$, where $e$ is the voltage across the winding, and $v$ is the input voltage. It is trivial to see why this is the case in an ideal transformer.
+\end{proposition}
+
+\begin{proposition}
+    No power losses occur in the iron core of the ideal transformer.
+\end{proposition}
+
+Note that it is also possible to refer any load that is in the secondary to the primary. To do this, note that:
+
+\[ Z_2 = \frac{V_2}{I_2} \]
+
+Recall that:
+
+\[ \frac{V_1}{V_2} = \frac{N_1}{N_2} = \frac{I_2}{I_1} \]
+
+Hence:
+
+\[ Z_2 = \frac{\frac{N_2}{N_1}V_1}{\frac{N_1}{N_2}I_1} = \left(\frac{N_2}{N_1}\right)^2Z_1 \]
+
+This then means that the impedance referred to the primary is simply:
+
+\[ Z_1 = \left(\frac{N_1}{N_2}\right)^2Z_2 \]
+
+\subsubsection{The real transformer}
+
+Now, beginning from the idealised transformer model, we can add various components to mimic different aspects of real life to it.
+
+\begin{proposition}
+    The reluctance of the iron ore is not equal to zero. Therefore, there as to be an inductor $X_0$ in parallel with the primary winding.
+\end{proposition}
+
+\begin{proposition}
+    There are power losses in the iron core due to hysteresis (covered in electromagnetics) and eddy current losses. This means that there is an iron loss resistance $R_0$ in parallel with $X_0$.
+\end{proposition}
+
+\begin{proposition}
+    Both windings have resistances $R_1$ and $R_2$ (the primary and the secondary). Note that we commonly refer to this as a copper loss.
+\end{proposition}
+
+\begin{proposition}
+    Not all primary flux links to the secondary, resulting in actual flux leakage. This means that there should be two inductances $X_1$ and $X_2$ connected in series to the winding resistances aforementioned. These are also copper losses.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/Screenshot 2024-04-05 160059.png}
+    \caption{Real transformer model}
+    \label{fig:enter-label}
+\end{figure}
+
+This is how the real transformer model looks like. There are further simplifications which can be done, for instance:
+
+\begin{enumerate}
+    \item Refer all copper losses from the secondary to the primary
+    \item Because the copper losses are much smaller than the iron losses, we can move the parallel grouping before the series grouping
+    \item The load can also be referred to the primary
+\end{enumerate}
+
+This then allows us to obtain a model for a real transformer with parameters $R_0, X_0$ (the iron losses) and $R_t, X_t$ (the copper losses).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/transf2.png}
+    \caption{Real transformer, further simplifications}
+    \label{fig:enter-label}
+\end{figure}
+
+To determine the various parameters of a transformer, we might use two tests. Note that these are also relevant for exam problems. The first one is called the open-circuit test, while the second one is the short-circuit test.
+
+\subsubsection{The open-circuit test}
+
+The primary of the transformer is excited, while the secondary remains open-circuited.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/opencircuit.png}
+    \caption{The open-circuit test}
+    \label{fig:enter-label}
+\end{figure}
+
+Because the secondary is open-circuited, then $I_2 = 0$, and thus $I_1 = 0$. This means that effectively, the copper losses (series grouping) can be fully neglected (no current passing through). We can now just refer the two voltages, since:
+
+\[ V_1 = E_1 \iff V_2 = E_2 \]
+
+Furthermore:
+
+\[ \frac{V_1}{V_2} = \frac{E_1}{E_2} = \frac{N_1}{N_2} \]
+
+We also know that real power is consumed by the resistor only, so $P = \frac{V_1^2}{R_0}$, and reactive power is consumed by the magnetising reactance only, so $Q = \frac{V_1^2}{X_0}$. Using these facts, and whatever else we might get in the problem, we can deduce the values of $R_0$ and $X_0$ (the iron losses).
+
+\subsubsection{The short-circuit test}
+
+In the short-circuit test, the primary is excited, while the secondary remains short-circuited. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/short.png}
+    \caption{The short-circuit test}
+    \label{fig:enter-label}
+\end{figure}
+
+Because of this, we have no voltage in the primary or secondary windings. Furthermore, we can fully ignore the parallel grouping. If the problem gives us details about the power consumed, then we can simply use:
+
+\[ P = I_1^2R_t \iff Q = I_1^2X_t \]
+
+To deduce the values of the copper losses.
+
+\begin{definition}[Regulation]
+    The regulation of a transformer is defined as the change in load voltage from the open-circuit value due to the load current. It is defined as:
+
+    \[ r = \frac{V_{2_\text{oc}} - V_2}{V_{2_\text{oc}}} \] 
+\end{definition}
+
+\newpage
+
+\section{Electromagnetics}
+
+This chapter is a continuation of the first section of this course, in which we cover a few more aspects of electrostatics and electromagnetics. A majority of what was presented in the first handout is skipped, due to it already being presented at the beginning of this document.
+
+\subsection{Electrostatics}
+
+\begin{proposition}[Capacitance of air-filled coaxial cable]
+    Consider an air-filled, cylindrical coaxial cable, filled with an inner conductor of diameter $2a$ and an outer conductor of diameter $2b$. Then, the capacitance per unit length of the cable is:
+
+    \[ C_l = \frac{2\pi\epsilon_0}{\ln{\frac{b}{a}}} \] 
+\end{proposition}
+
+\begin{proof}
+    Gauss' law states that:
+
+    \[ \oiint_S \mathbf{D}\cdot d\mathbf{A} = Q \]
+
+    Since we have a cylinder, i.e., a line of charge, then:
+
+    \[ D \times 2\pi rL = \rho L \iff D \times 2\pi r = \rho \iff D = \frac{\rho}{2\pi r} \]
+
+    Therefore, the electric field is:
+
+    \[ E = \frac{\rho}{2\pi\epsilon_0 r} \]
+
+    Now, we can use the Maxwell-Faraday law:
+
+    \[ dV = -\mathbf{E} \cdot \mathbf{dl} \] 
+
+    Therefore:
+
+    \[ 0 - V = -\int_a^b \frac{\rho}{2\pi\epsilon_0 r}dr \iff V = \frac{\rho}{2\pi\epsilon_0}\ln{\frac{b}{a}} \]
+    
+    By definition, we have that $Q = CV \iff C = \frac{Q}{V}$. Therefore:
+
+    \[ C = \frac{\rho L \times 2\pi\epsilon_0}{\rho \ln{\frac{b}{a}}} \]
+
+    By dividing by $L$ to obtain the capacitance per unit length and simplifying:
+
+    \[ C_l = \frac{2\pi\epsilon_0}{\ln{\frac{b}{a}}} \]
+\end{proof}
+
+Note that in the example above, if we had multiple substrates of dielectrics, we would have to integrate the electric fields between the respective ranges of each dielectric, obtaining a sum.
+
+\begin{proposition}[Capacitance between two parallel wires]
+    Consider two parallel cylindrical coaxial cables with their centres separated by a distance $2d$, and internal diameters of $2a$. Then, the capacitance per unit length between the two wires is:
+
+    \[ C_l = \frac{\pi\epsilon_0}{\ln{\frac{2d - a}{a}}} \]
+\end{proposition}
+
+\begin{proof}
+    The idea of this problem is to superpose the two electric flux densities/electric fields. As previously:
+
+    \[ D = \frac{\rho}{2\pi r} \iff E = \frac{\rho}{2\pi\epsilon_0 r} \]
+
+    If we now consider a coordinate system centred in between the two cylinders (in the middle of the line joining their centres), then, at position $x$ away from that point, the total electric field generated by both wires can be obtained by linear superposition:
+
+    \[ E(x) = \frac{\rho}{2\pi\epsilon_0(d+x)} + \frac{\rho}{2\pi\epsilon_0(d - x)} \]
+
+    Now, by Maxwell-Faraday:
+
+    \[ V = \int_{-d + a}^{d - a} \left(\frac{\rho}{2\pi\epsilon_0(d+x)} + \frac{\rho}{2\pi\epsilon_0(d - x)}\right)dx \]
+    \[ \iff V = \frac{\rho}{2\pi\epsilon_0}\int_{-d + a}^{d - a}\left(\frac{1}{d+x} + \frac{1}{d-x}\right)dx \]
+
+    Which, by means of integration yields:
+
+    \[ V = \frac{\rho}{\pi \epsilon_0}\ln{\frac{2d - a}{a}} \]
+
+    By using $Q = CV$ as previously, we arrive to the conclusion.
+\end{proof}
+
+\subsubsection{Equipotentials and the method of images}
+
+\begin{definition}[Equipotential]
+    An equipotential is a line (or a surface) of constant potential. Equipotentials are lines along which we could move a point charge without having to do any work against electric fields.
+\end{definition}
+
+\begin{theorem}[The method of images]
+    The method of images makes use of equipotentials. Consider the problem of calculating the electric field and potential of a point charge $Q$ at a height $h$ above a metal conducting plane. Because it is a conductor, the metal plane is an equipotential, and thus can be replcaed by an identical point charge at a distance $2h$ from the top one.
+\end{theorem}
+
+\begin{proof}
+    We consider a coordinate system on the equipotential line at the middle between the two charges. We know that:
+
+    \[ D = \frac{Q}{4\pi r^2} \]
+
+    Then, by linear superposition:
+
+    \[ E(x) = \frac{Q}{4\pi\epsilon_0}\left(\frac{1}{(h-x)^2} + \frac{1}{(h+x)^2}\right) \]
+\end{proof}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/images.png}
+    \caption{The method of images}
+    \label{fig:enter-label}
+\end{figure}
+
+Note that this can then be further integrated from $0$ to $h - a$ to obtain the resulting voltage, and calculating the capacitance.
+
+\subsubsection{Electrostatic energy}
+
+\begin{proposition}[Energy of a capacitor]
+    The energy stored in a capacitor of capacitance $C$, charge with a voltage $V$ is equal to:
+
+    \[ E = \frac{1}{2}CV^2 \]
+\end{proposition}
+
+\begin{proof}
+    The current is $I = \frac{\delta q}{\delta t}$. The voltage is $V = \frac{q}{C}$. The power is then:
+
+    \[ P = VI = \frac{q}{C}\frac{\delta q}{\delta t} \]
+
+    But $\delta W = P\delta t$, and hence:
+
+    \[ \delta W = \frac{q}{C}\delta q\]
+
+    By means of integration:
+
+    \[ W = \int \frac{q}{C}dq = \frac{q^2}{2C} = \frac{CV^2}{2} \]
+\end{proof}
+
+\begin{proposition}[Electrostatic force]
+    The force between the plates of a parallel-plate capacitor is:
+
+    \[ F = \frac{1}{2}V^2\frac{\partial C}{\partial x} \]
+\end{proposition}
+
+\begin{proof}
+    We use the principle of virtual work. The force $F$ does mechanical work against the "battery", equal to $-F \delta x$. The battery does work $V \delta q$ by providing the charge $\delta q$ in trying to keep the potential between the two conductors at a constant potential $V$. Also, there is a net change in electrostatic energy of:
+
+    \[ dE = d\left(\frac{QV}{2}\right) = \frac{1}{2}Vdq \iff \delta E = \frac{1}{2}V \delta q \]
+
+    Therefore:
+
+    \[ -F \delta x + V \delta q = \frac{1}{2}V \delta q \]
+
+    Hence:
+
+    \[ -F\delta x = -\frac{1}{2}V\delta q \iff F = \frac{1}{2}V \frac{\delta q}{\delta x} \]
+
+    Because we keep the potential constant, that means that $\delta q = V\delta C$, and therefore:
+
+    \[ F = \frac{1}{2}V^2\frac{\delta C}{\delta x} \]
+
+    In the limit where these changes are infinitesimally small:
+
+    \[ F = \frac{1}{2}V^2\frac{\partial C}{\partial x} \]
+\end{proof}
+
+Note that this can then be used in problems. For a parallel plate capacitor, we know that:
+
+\[ C = \frac{\epsilon S}{d} \]
+
+If we add a depth parameter to this function:
+
+\[ C(x) = \frac{\epsilon S}{x} \iff \frac{\partial C}{\partial x} = - \frac{\epsilon S}{x^2} \]
+
+\subsection{Electromagnetics}
+
+\begin{proposition}[Self inductance of a coaxial cable]
+    Consider a cylindrical coaxial cable made of an inner conductor of diameter $2a$ and outer conductor of diameter $2b$. Therefore, the self inductance of this cable is given by:
+
+    \[ L_l = \frac{\mu_0}{2\pi}\ln{\frac{b}{a}} \]
+\end{proposition}
+
+\begin{proof}
+    By Ampere's law, we have that:
+
+    \[ B \times 2\pi r = \mu_0 I \iff B = \frac{\mu_0 I}{2\pi r} \]
+
+    The flux is given by:
+
+    \[ \phi = \int_a^b \frac{\mu_0 I}{2\pi r}ldr = \frac{\mu_0 lI}{2\pi}\ln{\frac{b}{a}} \]
+
+    The self inductance is $L = \frac{\phi}{I}$, and by accounting for the fact that we are interested in the inductance per unit length, it is trivial to now deduce the formula above.
+\end{proof}
+
+\subsubsection{Mutual inductance}
+
+When two electrical circuits are close to one another, a current $I_1$ in the first one may cause a magnetic flux $\phi_2$ to link the other, and vice versa. Hence:
+
+\[ \phi_2 = M_{12}I_1 \iff \phi_1 = M_{21}I_2 \]
+
+The constants $M_{12}$ and $M_{21}$ are the mutual inductances of the circuit, and it is true that $M_{12} = M_{21} = M$, but the derivation of this is beyond the scope of this course.
+
+\begin{example}[Mutual inductance of concentric solenoids]
+    Consider a pair of concentric coils, the outer having $N_1$ turns per unit length, and the inner $N_2$ turns per unit length, cross sectional area $A$ and length $l$. The outer coil has a current $I$ passing through it, generating a magnetic flux $B$ along its axis. Therefore:
+
+    \[ B = \mu_0N_1l \]
+
+    The inner coil flux is $\phi_2 = BA$, and therefore the linked flux is:
+
+    \[ \phi_2' = N_2lBA = N_2l(\mu_0N_1l)A \]
+
+    The mutual inductance is $M = \frac{\phi_2'}{l}$. Therefore:
+
+    \[ M = \mu_0N_1N_2lA \]
+\end{example}
+
+\begin{proposition}[Magnetic energy in current-carrying circuits]
+    The magnetic energy stored in two self and mutually inducing coils is:
+
+    \[ E = \frac{1}{2}L_1I_1^2 + \frac{1}{2}L_2I_2^2 + MI_1I_2 \]
+\end{proposition}
+
+\begin{proof}
+    The flux linking the first coil is:
+
+    \[ \phi_1 = L_1I_1 + MI_2 \]
+
+    The flux linking the second coil is:
+
+    \[ \phi_2 = L_2I_2 + MI_1 \]
+
+    Therefore, since $V = \frac{d\phi}{dt}$, then $V_1 = L_1\frac{dI_1}{dt} + M\frac{dI_2}{dt}$, and $V_2 = L_2\frac{dI_2}{dt} + M\frac{dI_1}{dt}$. Now, using the fact that $P = \frac{dW}{dt} = I_1V_1 + I_2V_2$, one can easily deduce the proposition above.
+\end{proof}
+
+Note that the principles of energy conservation of virtual work can be applied to this expression, like we previously did for the electrostatics case, obtaining:
+
+\[ F = I_1I_2\frac{\partial M}{\partial x} \]
+
+However, this expression is not of much use, as it is pretty hard to obtain an analytical expression for $M = M(x)$.
+
+\newpage
+
+\subsubsection{Linear magnetic materials}
+
+\begin{definition}[The magnetic field intensity]
+    The magnetic field intensity $\mathbf{H}$ is defined so that its circulation around a closed loop equals the total current linking the loop. i.e.:
+
+    \[ \oint_\Gamma \mathbf{H} \cdot \mathbf{dl} = NI \]
+\end{definition}
+
+\begin{proposition}[Magnetic flux density/intensity equivalence]
+    For a linear magnetic material it is true that:
+
+    \[ \mathbf{B} = \mu_0\mu_r\mathbf{H} \]
+\end{proposition}
+
+\begin{theorem}[Conservation of magnetic flux]
+    Suppose we have a region $\Omega$ of space such that the magnetic flux density $\mathbf{B}$ lines are converging/contained/confined. Then, the total flux across the two areas will be the same.
+\end{theorem}
+
+\begin{example}[Magnetic flux in a toroidal electromagnet]
+    For a toroidal electromagnet, we can simply apply Ampere's law:
+
+    \[ Hl = NI \iff H \frac{NI}{l} \iff B = \frac{\mu_0\mu_r NI}{l} \]
+\end{example}
+
+\begin{example}[Magnetic flux in a toroidal electromagnet with an air gap]
+    In this case, we have to be more careful when applying Ampere's law. We have to separate regions:
+
+    \[ H_ml_m + H_gl_g = NI \iff \frac{B_m l_m}{\mu_0\mu_r} + \frac{B_g l_g}{\mu_0} = NI \]
+
+    Note that flux is conserved, and since areas are equal, $B_m = B_g$. By rearranging the equation, we can obtain an expression for $B_m$ or $B_g$, since they are both equal.
+\end{example}
+
+\begin{example}[Magnetic flux in a non-linear electromagnet]
+    We return to the above problem, but this time we assume that the material is no longer linear. Therefore:
+
+    \[ H_m l_m + H_g l_g = NI \iff H_m l_m + \frac{B_g l_g}{\mu_0} = NI \]
+
+    Note that we have not substituted the expression for $H_m$. Flux is conserved, so $B_m = B_g$. Therefore:
+
+    \[ H_m l_m + \frac{B_m l_g}{\mu_0} = NI \]
+
+    Therefore:
+
+    \[ B_m = \frac{\mu_0(NI - H_m l_m)}{l_g} \]
+
+    By intersecting this line (as a function of $H_m$) with the $B-H$ hysteresis curve, we can obtain the operating point of the electromagnet.
+\end{example}
+
+Note that if our problem gives us a permanent magnet, then we must set that $NI = 0$, since it produces magnetic flux without any current passing through it. A permanent magnet can be obtained through hysteresis by magnetising and de-magnetising a material.
 
 \end{document}

@@ -1980,4 +1980,42 @@ Note that if our problem gives us a permanent magnet, then we must set that $NI 
 
 \subsubsection{Magnetostatic energy}
 
+\begin{proposition}[Magnetostatic energy]
+    The magnetostatic energy stored in a magnetic field per unit volume is given by:
+
+    \[ \frac{W}{Al} = \frac{B^2}{2\mu_0\mu_r} \]
+\end{proposition}
+
+\begin{proof}
+    Due to Faraday's law, we have that $V = N\frac{\delta\phi}{\delta t}$, where $N$ is the number of turns. Furthermore:
+    \[ P = IV = \frac{\delta W}{\delta t} \]
+    Therefore, during a time $\delta t$, the total energy stored in the field is given by:
+    \[ \delta W = IV\delta t = NI \delta\phi \]
+    The change in flux is given by:
+    \[ \delta\phi = A\delta B \]
+    By combining the two relationships and making sure to account for the linked flux:
+    \[ \delta W = NIA\delta B \]
+    From Ampere's law, $\oint_\Gamma \mathbf{H} \cdot \mathbf{dl} = NI$, and then $NI = Hl$. By combining these further, we obtain:
+    \[ \delta W = HlA\delta B \]
+    Therefore:
+    \[ \frac{\delta W}{Al} = H\delta B \]
+    By means of integration, and using the fact that $B = \mu_0\mu_rH$, we can then deduce that:
+    \[ \frac{W}{Al} = \frac{B^2}{2\mu_0\mu_r} \]
+    Thus, we have concluded our proof.
+\end{proof}
+
+\begin{proposition}[Magnetostatic force]
+    The magnetostatic force is given by:
+    
+    \[ F = \frac{B^2}{2\mu_0\mu_r}A \]
+\end{proposition}
+
+\begin{proof}
+    Starting from the magnetostatic energy formula outlined above, we impose a displacement $\delta x$, and hence:
+    \[ \frac{F \delta x}{A \delta x} = \frac{B^2}{2\mu_0\mu_r} \]
+    By rearranging, we obtain the proposition.
+\end{proof}
+
+Note that if we have multiple air gaps, or multiple points of contact, we must multiply this by how many there are.
+
 \end{document}

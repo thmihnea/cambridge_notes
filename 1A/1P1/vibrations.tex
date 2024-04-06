@@ -92,4 +92,164 @@
 
 \newpage
 
+\section{Introduction to linear systems}
+
+In this course, we are concerned with linear systems that are described by ordinary differential equations.
+
+\begin{proposition}[Governing differential equation]
+  The governing differential equation of such a system is:
+
+  \[ a_n\frac{d^ny}{dt^n} + \ldots + a_1\frac{dy}{dt} + a_0y = x \] 
+\end{proposition}
+
+\subsection{System elements}
+
+\begin{proposition}[Mechanical systems for translation]
+  The mechanical components for translational motion are the mass, the damper, and the spring.
+  \begin{enumerate}
+    \item The mass exerts a force of the type: $f = m\ddot{y}$
+    \item The damper (or the dashpot) exerts a force of the type: $f = \lambda\dot{y}$
+    \item The spring exerts a force of the type: $f = ky$
+  \end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Mechanical systems for rotation]
+  The mechanical components for rotational motion are the intertia, the torsional damper, and the torsional spring.
+  \begin{enumerate}
+    \item The intertia exerts a torque of the type: $\tau = J\ddot{\theta}$
+    \item The torsional damper exerts a torque of the type: $\tau = \lambda\dot{\theta}$
+    \item The torsional spring exerts a torque of the type: $\tau = k\theta$
+  \end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Electrical systems]
+  The electrical components for electrical system as the inductance, the resistance and the capacitor.
+  \begin{enumerate}
+    \item The inductor has a voltage: $v = L\frac{di}{dt} = L\ddot{q}$
+    \item The resistor has a voltage: $v = iR = R\dot{q}$
+    \item The capacitor has a voltage: $v = \frac{1}{C}q$
+  \end{enumerate}
+\end{proposition}
+
+Note that in mechanical systems, for translation the coordinate $y$ is the degree of freedome, whereas for rotation the angle $\theta$ is the degree of freedom. In electrical systems, the charge $q$ is usually the degree of freedom.
+
+\newpage
+
+\section{Response of first order systems}
+
+Consider a spring and a damper in series, acted upon by a force $f$. Therefore:
+
+\[ 0 = f - k(x - y) \iff f = k(x - y) \]
+\[ 0 = -k(y - x) - \lambda\dot{y} \iff \lambda\dot{y} = k(x - y) \]
+
+The second equation yields us:
+
+\[ \lambda\dot{y} + ky = kx\iff \frac{\lambda}{k}\dot{y} + y = x \]
+
+By defining the time constant of the system $T := \frac{\lambda}{k}$, we obtain the governing differential equation for first-order systems:
+
+\[ T\frac{dy}{dt} + y = x \]
+
+\subsection{Integration of the equation}
+
+The equation $T\dot{y} + y = x$ can now be integrated to obtain its solution. For the time being, let us assume that we do not know anything about $x$. The complementary function is the solution to the equation:
+
+\[ T\dot{y} + y = 0 \iff \dot{y} + \frac{1}{T}y = 0 \]
+
+By standard procedure as per differential equations, the complementary function is:
+
+\[ y_{CF} = Ae^{-\frac{t}{T}} \]
+
+\subsubsection{Step response}
+
+\begin{definition}[Step response]
+  The step response is the response of the system to the Heaviside step function, i.e.:
+  
+  \[ H(t) = \begin{cases}
+    0, t < 0 \\
+    1, t \geq 0
+  \end{cases} \]
+\end{definition}
+
+We will further consider an input of the type $x_0H(t), x_0 \in \mathbb{R}$. Therefore, a particular solution to the differential equation is:
+
+\[ y_0(t) = x_0, t \geq 0 \]
+
+Hence, the output is:
+
+\[ y(t) = Ae^{-\frac{t}{T}} + x_0 \]
+
+By means of the initial condition $y(0) = 0$, we obtain the step response of a first-order system:
+
+\[ y(t) = x_0\left(1 - e^{-\frac{t}{T}}\right) \]
+
+\subsubsection{Impulse response}
+
+\begin{definition}[Impulse response]
+  The impulse response of a system is its response to the Dirac-$\delta$ function, defined as $\delta(t) = 0, \forall t \neq 0$, and:
+  \[ \int_a^b \delta(t)dt = 1, \forall a < 0 < b \]
+\end{definition}
+
+From the Mathematics course, we know that the impulse response is the derivative of the step response. Therefore, if we have an impulse of amplitude $x_0$, the output of the system will be:
+
+\[ y(t) = \frac{x_0}{T}e^{-\frac{t}{T}} \]
+
+\subsubsection{Ramp response}
+
+\begin{definition}[Ramp response]
+  The ramp response of a system is its response to an input of the type $x(t) = x_0t$.
+\end{definition}
+
+Consider the differential equation:
+
+\[ T\frac{dy}{dt} + y = x_0t \iff \frac{dy}{dt} + \frac{1}{T}y = \frac{x_0}{T}t \]
+
+The integrating factor is $I = e^{\int p(x)dx} = e^{\int \frac{1}{T}dt} = e^{\frac{t}{T}}$. Multiplying:
+
+\[ \left(\frac{dy}{dt} + \frac{1}{T}y\right)e^{\frac{t}{T}} = \frac{x_0}{T}te^{\frac{t}{T}} \iff \left(ye^{\frac{t}{T}}\right)' = \frac{x_0}{T}te^{\frac{t}{T}} \]
+
+By integrating this relationship, we obtain the ramp response:
+
+\[ y(t) = x_0T\left(e^{-\frac{t}{T}} - 1\right) + x_0t \]
+
+\subsubsection{Harmonic response}
+
+\begin{definition}[Harmonic response]
+  The harmonic response of a system is its response to an input of the type $x(t) = X\cos{\omega t}$.
+\end{definition}
+
+The trick to easily solving harmonic response problems is to instead work using sines and cosines, utilize complex numbers. The form of the input is equivalent to:
+
+\[ x(t) = \mathfrak{Re}{(Xe^{i\omega t})} \]
+
+By means of causality, the output has to be of the form $y(t) = \mathfrak{Re}{(Ye^{i\omega t})}$. Note that $X, Y \in \mathbb{C}$. The variable $X$ can also be real, but allowing it to be complex allows us to also encode an initial phase into our problem. By dropping the real specification and substituting into our initial equation, we obtain:
+
+\[ Ti\omega Ye^{i\omega t} + Ye^{i \omega t} = Xe^{i \omega t} \]
+
+This is equivalent to:
+
+\[ (1 + i\omega T)Y = X \iff Y = \frac{X}{1 + i \omega T} \]
+
+Now, by taking the real part, we can obtain the particular integral:
+
+\[ y(t) = \mathfrak{Re}\left(Ye^{i\omega t}\right) = \mathfrak{Re}\left(\frac{X}{1 + i\omega T}e^{i \omega T}\right) \]
+
+By writing $X = |X|e^{i\phi_x}$ and amplifying the denominator, we have:
+
+\[ y(t) = \mathfrak{Re}\left(\frac{1 - i\omega T}{1 + \omega^2T^2}|X|e^{i(\omega t + \phi_x)}\right) \]
+
+By using Euler's identity:
+
+\[ y(t) = \mathfrak{Re}\left(\frac{|X|(1 - i\omega T)}{1 + \omega^2T^2}(\cos{(\omega t + \phi_x)} + i\sin{(\omega t + \phi_x)})\right) \]
+
+Therefore:
+
+\[ y(t) = \frac{|X|}{\sqrt{1 + \omega^2T^2}}\cos{(\omega t + \phi)} \]
+
+Where $\phi = \phi_x - \arctan{\omega T}$. Note that this is only the particular integral. By adding in the complimentary function, we obtain the full output of this system when excited harmonically:
+
+\[ y(t) = Ae^{-\frac{t}{T}} + \frac{|X|}{\sqrt{1 + \omega^2T^2}}\cos{(\omega t + \phi)} \] 
+
+With the initial condition of $y(0) = 0$.
+
 \end{document}

@@ -2303,4 +2303,55 @@ In order to design a circuit using Karnaugh maps, we map the outputs, and then w
 
 To fix a static 1 hazard, we need to draw the Karnaugh map of the output concerned, and make sure all the sum-of-products term overlap. To fix a static 0 hazard, we need to make sure that the sum-of-products terms representing the inverse overlap.
 
+\newpage
+
+\subsection{Sequential logic}
+
+Sequential logic is used to construct circuits that have memory. In the following chapter, we will look at how to build JK bistables by understanding all the components that go into one, understanding the binary and hexadecimal number systems, and looking at analogue-digital circuits.
+
+\subsubsection{Binary numbers}
+
+Binary is base 2 - each digits is either 0 or 1. A binary digit is called a bit, and binary numbers are often 8 bits long. An 8 bit binary storage location is called a byte. We say that the most significant bit of a binary number is its leftmost bit, and the least significant bit is its rightmost bit (the one corresponding to $2^0$).
+
+\begin{proposition}[Decimal to binary conversion]
+    In order to convert from decimal to binary, we must use the remainders from succesive divisions by 2. For instance, let us convert $42$ in binary.
+    \begin{enumerate}
+        \item $42 / 2 = 21$, remainder $0$
+        \item $21 / 2 = 10$, remainder $1$
+        \item $10 / 2 = 5$, remainder $0$
+        \item $5 / 2 = 2$, remainder $1$
+        \item $2 / 2 = 1$, remainder $0$
+        \item $1 / 2 = 0$, remainder $1$
+    \end{enumerate}
+    By reading the result from bottom to top, we obtain that $42$ in binary is $101010$. Conversely, a binary number can be translated to decimal by the identity:
+    \[ n = \sum_k w_k 2^k \]
+    Where $w_k$ is the bit on the $k$th position. 
+\end{proposition}
+
+\begin{proposition}[Hexadecimal]
+    For base $16$ we need $16$ different symbols. Hence, we choose the digits $0 - 9$ and the letters $A - F$ to represent our numbers. The procedure for decomposing into hex and retrieving from hex is the same as for binary, but using $16$ instead of $2$.
+\end{proposition}
+
+Note that when they occur in code, hexadecimal numbers are labelled by the prefix $0x$, i.e. $0x59$ is hex 59.
+
+\subsubsection{Negative numbers}
+
+So far, we have only seen how to represent unsigned (positive) numbers. In a byte, we can represent the unsinged decimal numbers from $0$ to $255 = 2^8 - 1$. Note also that $255 = 11111111 = 0xFF$. Whatever we try to do, we only have $256$ combinations for representing numbers in a byte, so if we want to represent negative numbers, we have to give up some of the range of positive integers we had before. We choose the following strategy, called 2's complements.
+
+\begin{proposition}[2's complement]
+    Suppose we have a byte of data. We decide to allocate memory addresses $0000 0000 - 0111 1111$ to positive unsigned integers from $0$ to $127$, and addresses $1000 0000 - 1111 1111$ to negative integers in the range $[-128, -1]$.
+\end{proposition}
+
+\begin{proposition}[The opposite of a binary number]
+    In 2's complement form, the opposite of any binary number can be obtained by inverting all the bits and adding one to the result. Therefore, we can represent both subtraction and addition within a byte.
+\end{proposition}
+
+\begin{proposition}[Byte overflow]
+    Byte overflow, otherwise known as 2's complement overflow, occurs when the carry into the most significant bit is different than the carry out of the most significant bit. Then, we know that the result needs another bit in order to be represented.
+\end{proposition}
+
+\begin{proposition}[Parity]
+    Parity is the simplest form of error detection coding used for transferring binary data through an imperfect data channel. It involves in setting a particular bit in each binary number so as to ensure that an even number of bits are always one. For instance, if the number of bits is odd, set the MSB to $1$, otherwise set it to $0$. If the receiver does not have an even number of bits, there is an error.
+\end{proposition}
+
 \end{document}

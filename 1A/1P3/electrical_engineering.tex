@@ -9,6 +9,8 @@
 \usepackage{hyperref}
 \usepackage{esint}
 \usepackage{circuitikz}
+\usepackage{subcaption}
+\usepackage{etoolbox}
 
 % Page style settings
 \pagestyle{fancy}
@@ -2017,5 +2019,288 @@ Note that if our problem gives us a permanent magnet, then we must set that $NI 
 \end{proof}
 
 Note that if we have multiple air gaps, or multiple points of contact, we must multiply this by how many there are.
+
+\newpage
+
+\section{Digital circuits and information processing}
+
+We are now at the final chapter of the first year electrical engineering course. The aim here is to familiarize ourselves with combinational and sequential logic circuits, the analogue-digital interface, and the hardware and basic operation of microprocessors, memory and the associated electronic circuits required to build such systems.
+
+\subsection{Combinational logic}
+
+In electronic circuits, the two states of a logic variable are represented by two voltage levels. A high voltage is chosen for 1, or the TRUE output, and a low voltage for 0, or the FALSE output. This is called Boolean Algebra. In the following examples, we will denote $Y$ as the output for an expression, and $A, B, C \dots$ as the inputs.
+
+\subsubsection{Logic gates}
+
+\begin{proposition}[The NOT gate]
+    A NOT gate, also known as an inverter, is a logic gate that simply inverts the input, i.e.:
+
+    \[ Y = \overline{A} \]
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/not.png}
+    \caption{The NOT gate symbol and truth table}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{proposition}[The AND gate]
+    An AND gate is a logic gate that performs the logical AND operation between multiple inputs, i.e.:
+    \[ Y = A_1 \cdot A_2 \cdot \ldots \cdot A_n \]
+    The truth table for a two-input AND gate is shown below. 
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.45\textwidth]{images/and.png}
+    \caption{The AND gate symbol and truth table}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{proposition}[The OR gate]
+    An OR gate is a logic gate that performs the logical OR operation between multiple inputs, i.e.:
+    \[ Y = A_1 + A_2 + \ldots + A_n \]
+    The truth table for a two-input OR gate is shown below. The output is TRUE if any of the inputs is TRUE.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/or.png}
+    \caption{The OR gate symbol and truth table}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{proposition}[The XOR gate]
+    A XOR gate, also known as an Exclusive-OR gate, is a logic gate that performs the logical XOR operaetions between multiple inputs, i.e.:
+    \[ Y = A_1 \oplus A_2 \oplus \ldots \oplus A_n\]
+    The truth table for a two-input XOR gate is shown below. Note that the output is TRUE if any of the two inputs is TRUE. However, the difference lies in the fact that if both inputs are TRUE, then the output is false. Only one of them can be TRUE.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/xor.png}
+    \caption{The XOR gate symbol and truth table}
+    \label{fig:enter-label}
+\end{figure}
+
+Lastly, we present the two most versatile gates one can build using transistors. We will later see why these two gates are so versatile, but the baseline is that any logic circuit can be built completely by one type of the following two gates, which massively saves on cost.
+
+\begin{proposition}[The NAND gate]
+    The NAND gate is a logic gate that performs the logical AND operation between multiple inputs, and then inverts the result, i.e.:
+    \[ Y = \overline{A_1 \cdot A_2 \cdot \ldots \cdot A_n} \]
+    The truth table for a two-input NAND gate is shown below. 
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/nand.png}
+    \caption{The NAND gate symbol and truth table}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{proposition}[The NOR gate]
+    The NOR gate is a logic gate that performs the logical OR operation between multiple inputs, and then inverts the result, i.e.:
+    \[ Y = \overline{A_1 + A_2 + \ldots + A_n} \]
+    The truth table for a two-input NOR gate is shown below.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/nor.png}
+    \caption{The NOR gate symbol and truth table}
+    \label{fig:enter-label}
+\end{figure}
+
+\newpage
+
+\subsubsection{Building logic gates from transistors}
+
+Let us consider the example of an inverter - a high voltage would represent a logic TRUE, and a zero (or low) voltage would represent a logic FALSE. Therefore, we can create a graph that would display this specific behaviour that we want to obtain from our circuit. Note that this is also a non-linear characteristic, so we first have to deduce a method by which circuits like these could be analyzed.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.35\textwidth]{images/Screenshot 2024-04-06 110736.png}
+    \caption{The characteristic of an inverter}
+    \label{fig:enter-label}
+\end{figure}
+
+Now, we will consider the case shown below where we have two ohmic resistors in series with each other, and we present a method for solving this circuit graphically.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.5\textwidth]{images/Screenshot 2024-04-06 110954.png}
+        \caption{The series resistor circuit}
+        \label{fig:image1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{images/Screenshot 2024-04-06 111001.png}
+        \caption{Graph intersecting the two characteristics}
+        \label{fig:image2}
+    \end{subfigure}
+    \caption{Graphical method of solving the series resistor circuit}
+    \label{fig:both}
+\end{figure}
+
+The idea is to first observe that for the lower resistor, because it is connected to ground, it is true that:
+
+\[ V_x = 2I \]
+
+Where $I$ is the current passing through both resistances. Furthermore, for the top resistor:
+
+\[ 10 - V_x = I\]
+
+Now, as per the figure, the resistor that is connected to ground is plotted normally on the graph, and has a slope of $\frac{1}{2}$. The upper resistor is a line with slope of $-1$. The point at which they intersect is the operating point. Furthermore, let us consider what happens when we replace the lower resistor with a non-linear circuit component. We will obtain a graph like this:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/Screenshot 2024-04-06 111810.png}
+    \caption{Non-linear characteristic graph}
+    \label{fig:enter-label}
+\end{figure}
+
+Again, the point at which the two lines intersect is the operating point of our circuit. Now, we can start building logic gates out of N-channel MOSFETs. Note that enhancement mode means that the transistor is off when $V_{GS} = 0$. The alternative is a depletion mode transistor which is on when $V_{GS} = 0$.
+
+\begin{proposition}[The inverter circuit]
+    An inverter gate can be made using a N-MOSFET and a 1k$\Omega$ resistor. The circuit is shown below.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.25\textwidth]{images/Screenshot 2024-04-06 112244.png}
+    \caption{Inverter circuit}
+    \label{fig:enter-label}
+\end{figure}
+
+For the resistor, we have that:
+
+
+
+\[ 10 - V = IR \iff I = \frac{10 - V}{R} \]
+
+Note that $V = V_{DS}$ and $I = I_{DS}$. For the transistor, we can simply use its own characteristic. Again, note that in our circuit, the voltage that corresponds to our input voltage is $V_{GS}$, and the voltage corresponding to the output is $V_{DS}$, as can be seen above. The idea is to now plot both characteristics on the same graph, i.e., plot the resistor characteristic on the transistor's.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/Screenshot 2024-04-06 112807.png}
+    \caption{Inverter circuit characteristic}
+    \label{fig:enter-label}
+\end{figure}
+
+If we now decide to plot all points of intersection on a $V_{DS} = V_{DS}(V_{GS})$ graph, we will observe that the circuit is, in fact, inverting the input. However, the response is quite far from reality (it is not a square wave). If we say, for instance, that any voltage greater than $9V$ is a logic TRUE, and any voltage lower than $2V$ is a logic FALSE, the gate would work as intended.
+
+\begin{proposition}[The NOR circuit]
+    A NOR gate can be made using a resistor, connected in series with a parallel grouping of two N-MOSFET transistors.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/Screenshot 2024-04-06 113143.png}
+    \caption{NOR gate circuit}
+    \label{fig:enter-label}
+\end{figure}
+
+If we wish to deduce why this circuit is a NOR gate, we must think of the transistors as switches. If both of them are off, then there is no closed path for the current, so there is no current flowing through the resistor, and then no voltage drop. Therefore, $V_Y = V_{DD}$, which is high (TRUE). Consequently, if any of the transistors is on, then there will always be a path the current can take. Since they act as shorts, they form a direct path to ground, and hence $V_Y = 0$, which is low (FALSE).
+
+\begin{proposition}[The NAND gate]
+    A NAND gate can be made using a resistor in series with two N-MOSFET transistors.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.25\textwidth]{images/Screenshot 2024-04-06 113538.png}
+    \caption{NAND gate circuit}
+    \label{fig:enter-label}
+\end{figure}
+
+To see why this is a NAND gate: if both transistors are off, then there is no current flowing through $R$, and hence $V_Y = V_{DD}$, which is TRUE. In fact, if any of the transistors is off, then there will be no conducting path. The only way current flows is if both transistors are on, case in which they act as shorts, and hence $V_Y = 0$, which is FALSE.
+
+\begin{proposition}[Pseudo-resistors]
+    Because resistors are too big compared with transistors, we can create a conducting path between the drain and the gate, effectively having $V_D = V_G \iff V_{DS} = V_{GS}$. This gives us a pseudo-ohmic transistor, which is an approximation for a resistor. This then allows us to replace any resistor with a transistor.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/Screenshot 2024-04-06 114013.png}
+    \caption{Pseudo-resistor}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsubsection{Boolean algebra}
+
+\begin{definition}[Boolean algebra]
+    A boolean algebra is a set $M$, equipped with two binary operations $\cdot$ and $+$, a unary operation, and two elements $0$ and $1$, such that $\forall A, B, C \in M$:
+    \begin{enumerate}
+        \item $A + B = B + A$
+        \item $A \cdot B = B \cdot A$
+        \item $(A + B) + C = A + (B + C)$
+        \item $(A \cdot B) \cdot C = A \cdot (B \cdot C)$
+        \item $A \cdot (B + C) = A \cdot B + A \cdot C$
+        \item $A + (B \cdot C) = (A + B) \cdot (A + C)$
+        \item $A + (A \cdot B) = A$
+        \item $A \cdot (A + C) = A$ 
+    \end{enumerate}
+\end{definition}
+
+\begin{theorem}[De Morgan's Theorem]
+    Let us consider $A_1, A_2, \ldots, A_n \in M$. Then, De Morgan's theorem states that:
+    \begin{enumerate}
+        \item $\overline{A_1 + A_2 + \ldots A_n} = \overline{A_1} \cdot \overline{A_2} \cdot \ldots \cdot \overline{A_n}$
+        \item $\overline{A_1 \cdot A_2 \cdot \ldots A_n} = \overline{A_1} + \overline{A_2} + \ldots + \overline{A_n}$
+    \end{enumerate}
+\end{theorem}
+
+\begin{proposition}[Karnaugh map]
+    A Karnaugh map is a visual tool which allows us to map expression of a maximum of 5 different variables. A 4-variable Karnaugh map is shown below. The idea is to simply map the outputs to the corresponding combination of inputs.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.35\textwidth]{images/Screenshot 2024-04-06 115451.png}
+    \caption{Karnaugh map}
+    \label{fig:enter-label}
+\end{figure}
+
+In order to design a circuit using Karnaugh maps, we map the outputs, and then we can deduce the output by mapping $1$s in groups of powers of two.
+
+\begin{proposition}[Mapping the NAND expression]
+    If we wish to map the simplest NAND-based expression for a given circuit, we need to:
+    \begin{enumerate}
+        \item Write down the simplest sum-of-products expression for the output from the Karnaugh map
+        \item Use De Morgan to convert this to an expression using NAND gates
+    \end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Mapping the NOR expression]
+    If we wish to map the simplest NOR-based expression for a given circuit, we need to:
+    \begin{enumerate}
+        \item Use the Karnaugh map to write down the simplest sum-of-products expression for the inverse of the output, by mapping the zeroes of the expression
+        \item Use De Morgan to convert this to an expression using NOR gates
+    \end{enumerate}
+\end{proposition}
+
+\begin{definition}[Do not care states]
+    In some applications, the output state for certain combinations of input variables may not matter. Such states are know as do not care states and are marked by an X on the Karnaugh map. They can be chosen as either 0 or 1, whichever helps to produce the simplest logic.
+\end{definition}
+
+\subsubsection{Hazards}
+
+\begin{definition}[Static hazard]
+    A static hazard is when a signal undergoes a momentary transition when it is supposed to remain unchanged. There are two types of static hazards:
+    \begin{enumerate}
+        \item Static-1 hazards occur when the output should be TRUE, and it momentarily changes to FALSE
+        \item Static-0 hazards occur when the output should be FALSE, and it momentarily changes to TRUE
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Dynamic hazard]
+    A dynamic hazard is when a signal changes more than once when it is supposed to change just once.
+\end{definition}
+
+To fix a static 1 hazard, we need to draw the Karnaugh map of the output concerned, and make sure all the sum-of-products term overlap. To fix a static 0 hazard, we need to make sure that the sum-of-products terms representing the inverse overlap.
 
 \end{document}

@@ -262,4 +262,114 @@ With the initial condition of $y(0) = 0$.
   \[ \frac{1}{\omega_n^2}\ddot{y} + \frac{2\zeta}{\omega_n}\dot{y} + y = x \]
 \end{proposition}
 
+\begin{proof}
+  Let us consider a mass with a dashpot and a spring in parallel, having an applied force $f$. The governing differential equation is:
+
+  \[ m\ddot{y} = f - ky - \lambda\dot{y} \iff m\ddot{y} + \lambda\dot{y} + ky = f \]
+
+  By dividing this equation through $k$, we deduce:
+
+  \[ \frac{m}{k}\ddot{y} + \frac{\lambda}{k}\dot{y} + y = \frac{f}{k} \]
+
+  Now, we can define the natural frequency of this system as $\frac{1}{\omega_n^2} = \frac{m}{k} \iff \omega_n = \sqrt{\frac{k}{m}}$. Likewise, by identifying $\frac{2\zeta}{\omega_n} = \frac{\lambda}{k}$, we can deduce that the damping factor $\zeta$ is given by:
+
+  \[ \zeta = \frac{\lambda}{2\sqrt{mk}} \]
+\end{proof}
+
+\subsection{Free vibration}
+
+\begin{definition}[Free vibration]
+  Free vibration occurs when the input $x$ is equal to $x(t) = 0$.
+\end{definition}
+
+Since the governing differential equation is:
+
+\[ \frac{1}{\omega_n^2}\ddot{y} + \frac{2\zeta}{\omega_n}\dot{y} + y = 0 \]
+
+By solving the characteristic equation, we obtain the solutions:
+
+\[ \alpha_{1, 2} = -\zeta\omega_n \pm \omega_n\sqrt{\zeta^2 - 1} \]
+
+We now have to distinguish between three separate cases:
+
+\begin{enumerate}
+  \item $\zeta > 1$, i.e. both roots are real and we refer to this system as "over-damped"
+  \item $\zeta = 0$, i.e. both roots are repeated and we refer to the system as "critically damped"
+  \item $\zeta < 1$, i.e. both roots are cmplex conjugate and we refer to the system as "under damped"
+\end{enumerate}
+
+\subsubsection{Over-damped systems}
+
+This is equivalent to the system being in the first case, which is equivalent to $\zeta > 1$. Therefore, the complementary function is:
+
+\[ y_{CF} = Ae^{\left(-\zeta\omega_n - \omega_n\sqrt{\zeta^2 - 1}\right)t} + Be^{\left(-\zeta\omega_n + \omega_n\sqrt{\zeta^2 - 1}\right)t} \]
+
+\subsubsection{Critically damped systems}
+
+This is equivalent to the system being in the second case, which is equivalent to $\zeta = 1$. Therefore, the complementary function is of the type:
+
+\[ y_{CF} = (A + Bt)e^{-\omega_n t} \]
+
+\subsubsection{Under-damped systems}
+
+This is equivalent to the system being in the third case, which is equivalent to $\zeta < 1$. Therefore, before proceeding, let us define:
+
+\[ \omega_d = \omega_n\sqrt{1 - \zeta^2} \]
+
+This is also referred to as the damped natural frequency. Hence, the complementary function is of the type:
+
+\[ y_{CF} = e^{-\zeta\omega_n t}\left(A\sin{\omega_d t} + B\cos{\omega_d t}\right) \]
+
+However, we want this to be in an even closer form. Let us consider the equation:
+
+\[ A\cos{(x + \phi)} = B\sin{x} + C\cos{x} \iff A\cos{x}\cos{\phi} - A\sin{x}\sin{\phi} = B\sin{x} + C\cos{x} \]
+
+By identifying terms, we deduce that $C = A\cos{\phi}$ and $B = -A\sin{\phi}$. Therefore, the two constants $A$ and $\phi$ are:
+
+\[ \phi = -\arctan{\frac{B}{C}} \iff A = \sqrt{B^2 + C^2} \]
+
+Therefore, we can write the response of under-damped system as:
+
+\[ y_{CF} = De^{-\zeta\omega_n t}\cos{(\omega_d t - \psi)} \]
+
+Where $D$ and $\psi$ are constants which are yet to be determined.
+
+\subsection{Step response}
+
+It is trivial to observe that if $f(t) = x_0H(t)$, $x_0 \in \mathbb{R}$, then the particular integral is simply $y_{PI} = x_0, \forall t > 0$. Let us now only consider an under-damped system. Hence:
+
+\[ y(t) = De^{-\zeta\omega_n t}\cos{(\omega_d t - \psi)} + x_0 \]
+
+By setting the boundary conditions $y(0) = 0$ and $\dot{y}(0) = 0$ due to causality, we deduce that:
+
+\[ D = -\frac{x_0}{\cos{\psi}} \iff \tan{\psi} = \zeta\frac{\omega_n}{\omega_d} \]
+
+Also, note that $\sin{\psi} = \zeta$ and $\cos{\psi} = \sqrt{1 - \zeta^2}$. Therefore, the output (response) of the system is:
+
+\[ y(t) = x_0\left(1 - \frac{e^{-\zeta\omega_n t}\cos{(\omega_d t - \psi)}}{\cos{\psi}}\right) \]
+
+If $\zeta << 1$, then this expression can be approximated as:
+
+\[ y(t) \approx x_0\left(1 - e^{-\zeta\omega_n t}\cos{(\omega_n t)}\right) \]
+
+The graph for the step response can be found on page 6 of the Mechanics databook.
+
+\subsection{Impulse response}
+
+As mentioned previously, the impulse response is the response of the system to $\delta(t)$. Hence, it is also the derivative of the step response. By simply differentiating the expression above:
+
+\[ y(t) = \frac{\omega_n}{\sqrt{1 - \zeta^2}}e^{-\zeta\omega_n t}\sin{\omega_d t} \]
+
+The graph for the impulse response can be found on page 7 of the Mechanics databook.
+
+\subsection{Logarithmic decrement}
+
+\begin{definition}[Logarithmic decrement]
+  The logarithmic decrement is a method of measuring the damping ratio from the transient response of a system. It is defined as:
+
+  \[ \Delta = \ln{\frac{y_1}{y_2}} = \ln{e^{\zeta\omega_nT}} = \zeta\omega_nT = \frac{2\pi\zeta}{\sqrt{1 - \zeta^2}} \]
+
+  Where $T = \frac{2\pi}{\omega_d}$ is the period of the damped oscillations.
+\end{definition}
+
 \end{document}

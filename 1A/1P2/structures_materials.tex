@@ -1236,6 +1236,325 @@ Note that this idea of linear superposition can be applied in all sorts of probl
 
 \newpage
 
+\subsection{Stresses in elastic beams}
+
+When analyzing stresses in elastic beams, we make two key assumptions:
+
+\begin{enumerate}
+    \item The central line (neutral axis) does not change in length
+    \item All plane sections must remain plane (Euler-Bernoulli hypothesis)
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/strains.png}
+    \caption{Strain calculation}
+    \label{fig:enter-label}
+\end{figure}
+
+These two assumptions allows us to consider a piece of beam of the type presented above. Therefore, by means of basic geometry:
+
+\[ L = \theta R \]
+
+Likewise:
+
+\[ L \Delta L = \theta(R + y) \]
+
+By manipulating the above, we deduce that:
+
+\[ \frac{\Delta L}{L} = \frac{y}{R} \]
+
+\begin{proposition}[Strain in an elastic beam]
+    The strain in an elastic beam varies linearly with the curvature, i.e.:
+
+    \[ \epsilon = \kappa y \]
+
+    Where $y$ is the distance from the neutral axis. We will later show what the neutral axis is.
+\end{proposition}
+
+\begin{proposition}[Stress-strain equivalence]
+    Due to the fact that we are assuming linear elasticity in the beams, we can determine that the stress acting at a distance $y$ from the neutral axis must be:
+
+    \[ \sigma = E\epsilon \iff \sigma = E\kappa y \]
+
+    Note that we can observe that for $y > 0$, $\sigma > 0$, which means that the beam is in tension. For $y < 0$, that means that $\sigma < 0$, i.e. the beam is in compression.
+\end{proposition}
+
+\begin{proposition}[Bending moment]
+    The bending moment in a straight elastic beam is given by:
+
+    \[ M = EI\Delta\kappa \]
+\end{proposition}
+
+\begin{proof}
+    We are now able to finally prove this result. Consider the elemental force:
+
+    \[ \delta T = \sigma \delta A = (E\kappa y)(\delta A) \]
+
+    The bending moment is given by:
+
+    \[ \delta M = y \delta A \iff \delta M = E\kappa y^2\delta A \]
+
+    Therefore:
+
+    \[ M = E\kappa \int_A y^2 dA \]
+
+    We define $I := \int_A y^2dA$ as the second moment of area. Therefore:
+
+    \[ M = EI\kappa \]
+\end{proof}
+
+Therefore, by combining the stress and moment relationship, we can now deduce that:
+
+\[ \sigma = \frac{My}{I} \]
+
+\begin{proposition}[Calculation of the second moment of area]
+    In order to calculate the second moment of area, we must first determine where the centroid of the section is and then align our coordinate system with that axis. Then, we can simply compute the integral to find the second moment of area. The centroid is the place where:
+
+    \[ \int_A ydA = 0 \]
+\end{proposition}
+
+\begin{proposition}[Parallel axis theorem]
+    If we wish to calculate the second moment of area about a different axis, we can use the parallel axis theorem, i.e.:
+
+    \[ I_P = I_O + Ad^2 \]
+
+    Where $A$ is the area of the cut and $d$ is the distance between the two axes.
+\end{proposition}
+
+\subsubsection{Combined bending and axial force}
+
+Oftentimes a beam may have to carry both a bending moment $M$ and an axial force $T$. The stress distribution can then be obtained by superposing the stresses due to both loading conditions, i.e.:
+
+\[ \sigma = \frac{My}{I} + \frac{T}{A} \]
+
+\begin{example}
+    Compute the required axial compression $C$ in order to avoid any tensile stresses in a rectangular cross-section.
+
+    To do this, we impose our condition:
+
+    \[ \sigma = \frac{My}{I} - \frac{C}{A} \leq 0 \]
+
+    The stress is greatest at $y = \frac{d}{2}$ and $I = \frac{bd^3}{12}$ for a rectangular beam. Hence:
+
+    \[ M\frac{\frac{d}{2}}{\frac{bd^3}{12}} \leq \frac{C}{bd} \]
+
+    Hence:
+
+    \[ \frac{6M}{bd^2} \leq \frac{C}{bd} \iff C \geq \frac{6M}{d} \]
+
+    If we wish to also know where this compression force needs to act, let us consider that $M = C\delta$. Hence:
+
+    \[ C \geq \frac{6C\delta}{d} \iff 1 \geq \frac{6\delta}{d} \]
+
+    Therefore, we can deduce that:
+
+    \[ \delta \leq \frac{d}{6} \]
+
+    So the force needs to act within the middle third of the section for the condition to be satisfied.
+\end{example}
+
+\subsubsection{Bending stresses in composite beams}
+
+\begin{definition}[Composite beam]
+    A composite beam is made from two or more different materials.
+\end{definition}
+
+The idea when analyzing such beams is to:
+
+\begin{enumerate}
+    \item First, convert all members into a single material, using the fact that all flexural rigidities must be the same
+    \item Calculate the neutral axis position by taking moment equilibrium
+    \item Calculate the second moment of area
+\end{enumerate}
+
+Now, if we wish to find the stress in one part of the beam, we simply need to use:
+
+\[ \sigma = \frac{E_\text{current}}{E_\text{transformed}}\frac{My}{I} \]
+
+\subsubsection{Pure bending of reinforced concrete beams}
+
+Concrete is a material that is strong in compression, but weak in tension. Steel is equally strong in tension and compression. Therefore, the idea behind reinforced concrete is to use slender steel bars to withstand the tension due to the bending moment, and concrete to withstand compression.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.65\textwidth]{images/concrete.png}
+    \caption{Reinforced concrete pure bending}
+    \label{fig:enter-label}
+\end{figure}
+
+We will assume the following behaviour:
+
+\begin{enumerate}
+    \item The steel is responsible for carrying all tension
+    \item The concrete is responsible for carrying all compression
+    \item Any concrete in compression is equal to void/air (has no strength)
+\end{enumerate}
+
+Because anything above the neutral axis is in tension, and anything below it is in compression, we are motivated to consider the following transformation:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.65\textwidth]{images/transform.png}
+    \caption{Transformed section of reinforced concrete}
+    \label{fig:enter-label}
+\end{figure}
+
+We assume that the neutral axis is at a distance $\alpha$ from the bottom of the beam. By moment equilibrium:
+
+\[ b\alpha d \times \frac{1}{2}\alpha d = (1 - \alpha)d mA_s \]
+Hence:
+
+\[ \frac{bd^2}{2}\alpha^2 + mA_s d \alpha - mA_sd = 0 \]
+
+Hence:
+
+\[ \frac{bd}{2mA_s}\alpha^2 + \alpha - 1 = 0 \]
+
+This quadratic equation can then be solved to obtain the position of the neutral axis. Furthermore, we can now use the this to compute the moment of inertia of the concrete beam, and then simply analyse it as previously.
+
+\subsubsection{Shear stresses in beams}
+
+Consider making a cut at a certain depth in a beam, likewise:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.65\textwidth]{images/shear.png}
+    \caption{Shear stresses}
+    \label{fig:enter-label}
+\end{figure}
+
+The total longitudinal force acting at $a$ is given by:
+
+\[ R_1 = \int_A \frac{Say}{I}dA \]
+
+Likewise, the force acting at $a + c$ is given by:
+
+\[ R_2 = \int_A \frac{S(a+c)y}{I}dA \]
+
+Therefore, we must have a force balancing these two out, i.e.:
+
+\[ Q = R_2 - R_1 = \frac{Sc}{I}\int_A ydA = \frac{ScA_c\overline{y}}{I} \]
+
+Dividing by $c$ yields us the force per unit length:
+
+\[ q = \frac{SA_c\overline{y}}{I} \]
+
+Note that $A_c$ is the area of the cut surface, while $\overline{y}$ is the distance from the neutral axis of the entire beam to the centroid of the cut. If we divide by the length of the cut, we can find the shear stress:
+
+\[ \tau = \frac{SA_c\overline{y}}{bI} \]
+
+\newpage
+
+\subsection{Buckling of beams}
+
+\begin{proposition}[Hypotheses]
+    To consider the buckling of a compression member, we will make a number of key assumptions:
+    \begin{enumerate}
+        \item The bar is pin-ended
+        \item The beam is initially perfectly straight
+        \item The behaviour is linear-elastic
+        \item All deflections are assumed to be small
+        \item Initially the beam is stress-free
+    \end{enumerate}
+\end{proposition}
+
+\subsubsection{The Euler column}
+
+Consider a simple pin-ended bar in compression. Moment equilibrium yields:
+
+\[ M = Pv \]
+
+Linear-elasticity yields:
+
+\[ M = -EI\frac{d^2v}{dx^2} \]
+
+Therefore:
+
+\[ \frac{d^2v}{dx^2} + \frac{P}{EI}v = 0 \]
+
+By defining $\alpha^2 = \frac{P}{EI}$, we obtain the following general solution to our differential equation:
+
+\[ v(x) = A\sin{\alpha x} + B\cos{\alpha x} \]
+
+The first boundary condition is $v(0) = 0$, yyielding $B = 0$. The second boundary condition is $v(L) = 0$, i.e.:
+
+\[ A\sin{\alpha L} = 0 \]
+
+The trivial solution is $A = 0$. However, if $A \neq 0$, then:
+
+\[ \alpha L = n\pi \iff \frac{P}{EI} = \frac{n^2\pi^2}{L^2} \iff P = \frac{n^2\pi^2EI}{L^2}\]
+
+The smallest value of buckling is obtained in the first mode, i.e. $n = 1$, and this is called the Euler buckling load:
+
+\[ P_E = \frac{\pi^2 EI}{L^2} \]
+
+\subsubsection{Fixed-end column}
+
+Consider a column where both ends are fixed. Therefore:
+
+\[ M = Pv - Q \]
+
+By using linear-elasticity again, we obtain:
+
+\[ \frac{d^2v}{dx^2} + \frac{P}{EI}v = \frac{Q}{EI} \]
+
+By solving this equation and setting the deflection and rotation at $0$ to be $0$, and taking care to set that the deflection at $L$ must also be zero, we obtain:
+
+\[ P = \frac{4\pi^2EI}{L^2} \]
+
+\begin{theorem}[Effective lengths]
+    If we examine carefully the mode shape for a column that is buckling, we can observe that there must always be two points of inflection. Therefore, the load at which the structure buckles will be:
+
+    \[ P = \frac{\pi^2EI}{L_e^2} \]
+
+    Where $L_e$ is the effective length.
+\end{theorem}
+
+Note that the above result can be obtained immediately for the fixed-end column, with $L_e = \frac{L}{2}$. 
+
+\subsubsection{Critical stress}
+
+Let us now examine the critical compressive stress $\sigma_{cr}$ at which a perfect strut will fail. It fails either by yielding when $\sigma_{cr} = \sigma_y$, or it will fail by buckling. The buckling stress is:
+
+\[ \sigma_E = \frac{P_E}{A} = \frac{\pi^2E}{L^2}\left(\frac{I}{A}\right) \]
+
+If we use the radius of gyration, we know that $I = Ar^2$. Hence:
+
+\[ \sigma_E = \frac{\pi^2 E}{(L/r)^2} \]
+
+Where $L/r$ is the slenderness of the column. Hence, the critical stress at failure $\sigma_{cr}$ will be the smaller of $\sigma_y$ and $\sigma_E$.
+
+\subsubsection{Imperfections}
+
+In practice, we are never straight, and therefore we can consider that the bar has an initial bow, defined by:
+
+\[ v_0 = \delta_0\sin{\frac{\pi x}{L}} \]
+
+If we consider the simple pin-ended bar, we can rewrite:
+
+\[ Pv = M \]
+
+The elastic law gives:
+
+\[ M = EI\Delta\kappa \]
+
+By accounting for the initial curvature, the governing differential equation becomes:
+
+\[ \frac{EI}{P}\frac{d^2v}{dx^2} + v = -\left(\frac{P_E}{P}\right)\delta_0\sin{\frac{\pi x}{L}} \]
+
+This equation can now be solved in a similar fashion as before, allowing us to deduce the critical load at which the structure will buckle.
+
+\begin{theorem}[Perry's formula]
+    The critical load at which a structure will buckle can be approximated using the formula:
+
+    \[ (\sigma_y - \sigma_{cr})(\sigma_E - \sigma_{cr}) = \eta\sigma_{cr}\sigma_E \]
+\end{theorem}
+
+As mentioned previously, in theory the value of the critical stress is either the yield or the buckling stress. However, due to imperfections, a constant $\eta$ is introduced (experimental value). We normally use $\eta \approx 0.003 \frac{L}{r}$.
+
+\newpage
+
 \section{Materials}
 
 Though they lacked the means to prove it, the ancient Greeks suspected that solids were made of discrete

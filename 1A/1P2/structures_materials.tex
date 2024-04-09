@@ -988,6 +988,254 @@ Therefore, the bar for which the deflection would be minimized if we added mass 
 
 \newpage
 
+\subsection{Equilibrium of beams}
+
+So far, we have only analyzed truss structures, where each of the members carries only an axial load. However, there are many structures where assuming only axial loads will simply not work. One such example are beams.
+
+\begin{definition}[Simply supported beam]
+    We say that a beam is simply supported if it is long and slender, and the end supports:
+    \begin{enumerate}
+        \item Prevent any vertical movement
+        \item Allow rotation
+        \item Only one of the supports is able to prevent horizontal movement
+    \end{enumerate}
+\end{definition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/simply.png}
+    \caption{Simply supported beam}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{definition}[Cantilever beam]
+    We say that a beam is cantilevered is the end support:
+    \begin{enumerate}
+        \item Prevents vertical movement
+        \item Prevents horizontal movement
+        \item Prevents rotation
+    \end{enumerate}
+\end{definition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/cantilever.png}
+    \caption{Cantilever beam}
+    \label{fig:enter-label}
+\end{figure}
+
+In order to analyze such structures, we proceed as we did before, making cuts at various distances and analyzing the forces/moments to the left/right of the cut.
+
+\begin{proposition}[Hypotheses]
+    For our theory to be accurate, we must make a few assumptions regarding the beams/structures we are going to analyze:
+    \begin{enumerate}
+        \item All bending moments are too small to either break or permanently bend the beam
+        \item We only consider two-dimensional situations, although all concepts can be generalized into three dimensions
+        \item We assume that the structure does not deflect significantly under load, and we can consider equilibrium in the original configuration
+    \end{enumerate}
+\end{proposition}
+
+Furthermore, our sign convention will be the same as previously:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/signconvention.png}
+    \caption{Sign convention}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{example}
+    Find the shear force and bending moment in the following cantilevered beam.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width = 0.5\textwidth]{images/examplebeam.png}
+        \caption{Partially loaded beam}
+        \label{fig:enter-label}
+    \end{figure}
+
+    Consider a cut a distance $x$ away from the support end, firstly on $x \geq \frac{L}{2}$. Therefore, the bending moment is:
+
+    \[ M(x) = \frac{W(L-x)^2}{2L} \]
+
+    For $x \leq \frac{L}{2}$, the bending moment is equal to:
+
+    \[ M(x) = \frac{W}{2}\left(\frac{L}{2} - x + \frac{L}{4}\right) \]
+
+    Hence, the bending moment distribution is:
+
+    \[ M(x) = \begin{cases}
+        \frac{W(L-x)^2}{2L}, x \geq \frac{L}{2} \\
+        \frac{W}{2}\left(\frac{3L}{4} - x\right), x \leq \frac{L}{2}
+    \end{cases} \]
+
+    The shear force will be negative due to our convention, equal to:
+
+    \[ S(x) = \begin{cases}
+        -\frac{W}{2}, x \leq \frac{L}{2} \\
+        -\frac{W(L - x)}{L}, \frac{L}{2} < x \leq L
+    \end{cases} \]
+\end{example}
+
+These can then be plotted on shear force and bending moment diagrams respectively to show the loading parameters of the said structure.
+
+\newpage
+
+\subsubsection{Differential equilibrium}
+
+Let us consider an infinitesimally small piece of a beam in equilibrium.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.75\textwidth]{images/diffeq.png}
+    \caption{Differential equilibrium}
+    \label{fig:enter-label}
+\end{figure}
+
+Horizontally, we deduce that:
+
+\[ dT = 0 \]
+
+Therefore, $T$ is a constant; this is valid as long as there is no axial loading. Vertically:
+
+\[ dS = qdx \iff q = \frac{dS}{dx} \]
+
+By taking moments:
+
+\[ dM = Sdx + \frac{1}{2}dSdx \]
+
+Neglecting $dSdx$ due to it being too small, we deduce that $dM = Sdx$, hence:
+
+\[ S = \frac{dM}{dx} \]
+
+\begin{theorem}[Differential equilibrium]
+    For the standard sign convention we have considered so far, the differential equations of equilibrium are:
+
+    \[ q = \frac{dS}{dx} \iff S = \frac{dM}{dx} \]
+\end{theorem}
+
+This relationship allows us to gain intuition into two different consequences:
+
+\begin{enumerate}
+    \item If the loading on a beam is purely done by point loads, then the shear force is constant between two consecutive point loads, while the bending moment varies linearly
+    \item If the loading on a beam is purely done by distributed loads (linearly), then the shear force varies linearly between two consecutive loading conditions, while the bending moment varies quadratically
+\end{enumerate}
+
+\newpage
+
+\subsection{Deflection of straight elastic beams}
+
+\begin{definition}[Curvature]
+    The curvature of a plane curve is best defined in the intrinsic coordinate system $(s, \psi)$, as shown beloww. The curvature at a point of the curve is given by:
+
+    \[ \kappa = \frac{d\psi}{ds} \]
+\end{definition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.5\textwidth]{images/curvature.png}
+    \caption{Curvature}
+    \label{fig:enter-label}
+\end{figure}
+
+Furthermore, there exist a relationship, as described in Mechanics, between the curvature and the radius of curvature, i.e.:
+
+\[ \rho = \frac{1}{\kappa} \] 
+
+\begin{proposition}[Curvature equivalence]
+    Due to our assumption that beams deflect by very small amounts, we can approximate that $ds \approx dx$, and hence:
+
+    \[ \kappa = \frac{d\psi}{dx} \]
+\end{proposition}
+
+Now, consider the figure below, showing the full deflection-rotation of a beam.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.35\textwidth]{images/deflect.png}
+    \caption{Deflection equivalence}
+    \label{fig:enter-label}
+\end{figure}
+
+Above, we considered an infinitesimally small element of beam. We can observe, from the small angle approximation, that:
+
+\[ \psi = -\frac{dv}{dx} \]
+
+Therefore, we deduce the following:
+
+\[ \kappa = \frac{d\psi}{dx} = \frac{d}{dx}\left(-\frac{dv}{dx}\right) = - \frac{d^2v}{dx^2}\]
+
+\begin{theorem}[Moment-deflection equivalence]
+    Let us consider a straight elastic beam with bending moment distribution $M = M(x)$. Therefore:
+
+    \[ M = EI\Delta\kappa  \]
+
+    In the case of no initial curvature on the beam, the relationship degenerates into:
+
+    \[ M = EI\kappa \iff M = -EI\frac{d^2v}{dx^2} \]
+\end{theorem}
+
+The relationship above will be proved in a later section. The idea, however, is simple - in order for us to be able to find the deflection/deflected shape of a beam, we first must find the bending moment distribution, then deduce what $\frac{d^2v}{dx^2}$ is equal to. Afterwards, we can integrate twice to find the deflection. Note:
+
+\begin{enumerate}
+    \item In simply supported beams, the boundary conditions are $v(0) = v(L) = 0$
+    \item In cantilevered beams, the boundary conditions are $v(0) = \frac{dv}{dx}(0) = 0$
+\end{enumerate}
+
+\begin{proposition}[Rigid overhang]
+    In the case of a beam featuring a rigid piece (unloaded) overhanging from either support, we must find the rotation and deflection (usually null) at its support. Afterwards:
+
+    \[ v = v_0 + \psi L \]
+
+    Where $v_0$ is the initial deflection, $\psi$ is the rotation and $L$ is the length of the overhang. Note that this simply allows us to skip integration, and can be proven using integration.
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.6\textwidth]{images/overhang.png}
+    \caption{Overhanging beam}
+    \label{fig:enter-label}
+\end{figure}
+
+Using the databook, we can observe that the rotation at the right-hand joint is equal to $\psi = \frac{WL^2}{16EI}$. Therefore, the deflection of the overhang will be:
+
+\[ v = \frac{WL^2}{16EI} \times \frac{L}{2} = \frac{WL^3}{32EI} \]
+
+\begin{proposition}[Non-rigid overhang]
+    In the case of a beam featuring a non-rigid (loaded) piece overhanging from either support, we must superpose two separate cases:
+    \begin{enumerate}
+        \item Rigid beam (acting as wall support) and non-rigid overhang
+        \item Non-rigid beam and rigid overhang
+    \end{enumerate}
+\end{proposition}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.6\textwidth]{images/overhang2.png}
+    \caption{Overhanging loaded non-rigid beam}
+    \label{fig:enter-label}
+\end{figure}
+
+In the case where the overhang is rigid, it then means that it effectively transmits a moment $Wb$ to the beam. By the databook, the end rotation of the beam will be:
+
+\[ \psi = \frac{Ma}{3EI} = \frac{Wba}{3EI} \]
+
+Therefore, the deflection is:
+
+\[ \delta_1 = \psi b = \frac{Wb^2a}{3EI} \]
+
+Now, if the beam is rigid and acts as a support, we have the simplest case of them all, i.e. point load at the end of a cantilever, and so:
+
+\[ \delta_2 = \frac{Wb^3}{3EI} \]
+
+Therefore, total deflection is:
+
+\[ \delta = \delta_1 + \delta_2 = \frac{Wb^2(a + b)}{3EI} \]
+
+Note that this idea of linear superposition can be applied in all sorts of problems, even when we are asked to find reaction forces that are normally not indetifiable via means of equilibrium (such as a propped cantilever).
+
+\newpage
+
 \section{Materials}
 
 Though they lacked the means to prove it, the ancient Greeks suspected that solids were made of discrete

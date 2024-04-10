@@ -1477,7 +1477,7 @@ By defining $\alpha^2 = \frac{P}{EI}$, we obtain the following general solution 
 
 \[ v(x) = A\sin{\alpha x} + B\cos{\alpha x} \]
 
-The first boundary condition is $v(0) = 0$, yyielding $B = 0$. The second boundary condition is $v(L) = 0$, i.e.:
+The first boundary condition is $v(0) = 0$, yielding $B = 0$. The second boundary condition is $v(L) = 0$, i.e.:
 
 \[ A\sin{\alpha L} = 0 \]
 
@@ -2603,5 +2603,187 @@ In general, as $\sigma_y$ increases, $K_{IC}$ goes down. At lower temperatures, 
 
     Compressive failure is initiated in Mode II (in-plane shear) - this will occur on the planes of maximum shear stress, which are those at $\frac{\pi}{4}$ to the loading axis. Failure under compression requires a much higher driving force than in tension - mainly due to frictional work being done behind the crack tip as asperities on the crack flanks slide over each other. This is also why the compressive strength of brittle materials is usually much greater than the tensile strength. Therefore, ceramics are weak in tension, and strong in compression.
 \end{proposition}
+
+\begin{proposition}[Fracture in composites]
+    The main energy-absorbing mechanism raising the toughness of fibre composites is the pulling of fibres out of their sockets in the matrix during crack advance.
+\end{proposition}
+
+\subsection{Weibull statistics}
+
+The strength at which brittle materials fail depends on the presence of flaws. This can be treated on a statistical basis. The following approach considers a chain of links; the survival of the chain under load requires that all the links survive. Conversely, failure occurs in the weakest link.
+
+\begin{theorem}[Survival probability]
+    Let us consider a volume $V_0$ of material, associated with a failure stress $\sigma_0$. Hence, the survival probability is given by:
+
+    \[ P_s(V) = \exp{\left(\int_V - \left(\frac{\sigma}{\sigma_0}\right)^m\frac{dV}{V_0}\right)} \]
+\end{theorem}
+
+Note that oftentimes we use bending to determine the survival probability using $\sigma = \frac{My}{I}$. The difference is that bending gives us a lower stress on-average.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics{images/survival.png}
+    \caption{The survival probability as a function of the Weibull modulus and the applied stress}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsection{Fatigue}
+
+\begin{definition}[Fatigue]
+    Fatigue is defined as the damage or failure of materials due to cycling loading. Fluctuating loads are in general more dangerous than monotonic loads.
+\end{definition}
+
+Before proceeding any further, we must first define the stress range (peak-to-peak):
+
+\[ \Delta\sigma = \sigma_{max} - \sigma_{min} \]
+
+Likewise, we define the mean stress as:
+
+\[ \sigma_m = \frac{\sigma_{max} + \sigma_{min}}{2} \]
+
+There are two types of fatigue:
+
+\begin{enumerate}
+    \item Low cycle fatigue - characterized by high-amplitude cyclic stressesl, having primarily plastic deformation, and a $N_f < 10^4$ cycles cycles to failure
+    \item High cycle fatigue - characterized by low-amplitude cyclic stresses, having primarily elastic deformation, and a $N_f > 10^4$ cycles to failure
+\end{enumerate}
+
+\begin{theorem}[The Coffin-Manson law]
+    Under low-cycle fatigue conditions, the strain can be approximated by the following power law:
+
+    \[ \Delta\epsilon N_f^\beta = C \]
+\end{theorem}
+
+\begin{theorem}[Basquin's law]
+    Under high-cycle fatigue conditions, the stress can be approximated as:
+
+    \[ \Delta\sigma N_f^\alpha = C \]
+
+    Furthermore, because in high-cycle fatigue we have elastic deformation, we might choose to write $\Delta\sigma = E\Delta\epsilon$ and deduce that:
+
+    \[ \Delta\epsilon = \frac{C/E}{N_f^\alpha} \]
+\end{theorem}
+
+In both of the laws above, note that $\alpha, \beta$ and $C$ are constants. Also note that both of these law are assuming a zero mean stress. However, one question arises: how do we cope with situations where the mean stress is not null?
+
+\begin{theorem}[Goodman's rule]
+    Consider a material loaded under cyclic conditions with a stress range $\Delta\sigma_{(\sigma m)}$ about a mean stress of $\sigma_m$. The stress range about a zero mean stress that would achieve the same fatigue life is given by:
+
+    \[ \Delta\sigma_{(\sigma m)} = \Delta\sigma_0\left(1 - \frac{\sigma_m}{\sigma_{ts}}\right) \]
+
+    Where $\sigma_{ts}$ is the tensile strength of the material.
+\end{theorem}
+
+\begin{theorem}[Miner's rule]
+    In practice, different components of a material are subjected to varying loads/stress ranges and amplitudes. Miner's rule states that the specimen fails when the proportion of the life time used up by each block adds up to unity, i.e.:
+
+    \[ \sum_i \frac{N_i}{N_{f_i}} = 1 \]
+\end{theorem}
+
+Furthermore, because we now are working with a stress range, it makes sense to define a stress intensity factor range:
+
+\[ \Delta K = Y\Delta\sigma\sqrt{\pi a} \]
+
+\begin{theorem}[Paris' law]
+    Paris' law states that the rate at which a crack grows in a material is given by the following expression:
+
+    \[ \frac{da}{dN} = A\Delta K^n \]
+\end{theorem}
+
+Furthermore, we can differentiate between three regimes of crack propagation:
+
+\begin{enumerate}
+    \item Crack initiation: The crack growth per cycle is zero below a threshold cyclic stress intensity factor range $\Delta K_{th}$. Above it, crack growth per cycle is very small.
+    \item Steady-state crack propagation: Crack propagation is described by Paris' law
+    \item Fast fracture: At high $\Delta K$, crack growth rate increases rapidly. As $K_{max}$ approaches $K_{IC}$, fast fracture occurs
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.65\textwidth]{images/paris.png}
+    \caption{Different regimes of fatigue crack propagation}
+    \label{fig:enter-label}
+\end{figure}
+
+\subsubsection{Failure of pressure vessels}
+
+\begin{theorem}[The leak-before-break criterion]
+    In pressurised cylinders, the main concern is to avoid catastrophic rupture, particularly when the pressurised fluid is a gas, in which case an explosion is likely to occur. Hence:
+    \begin{enumerate}
+        \item If $a_{crit} < t$, then fast fracture will occur
+        \item If $a_{crit} > t$, then gass will leak out through the crack, before the crack is large enough to propagate under fast fracture conditions
+    \end{enumerate}
+    Note that in the above, $a_{crit}$ is the critical flaw size, while $t$ is the vessel's wall thickness.
+\end{theorem}
+
+We have already shown in structures that the hoop stress is $\sigma_h = \frac{pr}{t}$ and the longitudinal stress is $\sigma_z = \frac{pr}{2t}$. Because the hoop stress is larger, it is the stress used to perform this analysis. Note that if the crack length is set to the wall thickness, the leak-before-break criterion can be written as:
+
+\[ K = Y\sigma\sqrt{\pi t} \leq K_{IC} \]
+
+Use $\sigma = \frac{pr}{t}$. Therefore:
+
+\[ Y\sqrt{\sigma\pi pr} \leq K_{IC} \]
+
+Hence, the maximum operating pressure is:
+
+\[ p_{max} = \frac{K_{IC}^2}{Y^2\sigma_y \pi r} \]
+
+Note that we set $\sigma = \sigma_y$ because we do not want plastic deformation to occur.
+
+\newpage
+
+\section{Tribology}
+
+Consider two surfaces in contact, with a nominal area of contact $A_n$. Surfaces are never flat at the microscopic scale, and therefore this contact occurs at only a few points called asperities. Hence, the true area of contact is much lower than the nominal area of contact. In metals:
+
+\[ W = \sum_k w_k = \sum_k Ha_k = H\sum_k a_k = HA_t \]
+
+Where $H$ is the hardness of the metal. Note that this equation is not applicable for polymers or ceramics.
+
+\subsection{Adhesive contact. Friction}
+
+When metal surfaces touch, due to high contact stresses, the contacting asperities plastically deform. The contact points flatten, forming adhesive contacts.
+
+\begin{proposition}[Metal-metal friction coefficient]
+    The friction coefficient between two metals (having oxide layers) is approximately $\frac{1}{6}$.
+\end{proposition}
+
+\begin{proof}
+    Let us consider the friction force acting upon the interface between the two layers:
+
+    \[ F = \sum_k f_k = \sum_k \tau_k a_k \approx \tau_s \sum a_k = \tau_s A_t \]
+
+    As previously shown, the maximum shear stress is $\tau_s = \frac{\sigma_y}{2}$, and the hardness is approximately $H \approx 3\sigma_y$. By writing $W = HA_t \iff A_t = \frac{W}{H}$, we obtain:
+
+    \[ F = \frac{\sigma_y}{2} \times \frac{W}{3\sigma_y} = \frac{W}{6} \]
+
+    Therefore:
+
+    \[ \mu = \frac{F}{W} = \frac{1}{6} \]
+\end{proof}
+
+\begin{theorem}[Amontons' law]
+    The friction coefficient between two metal surfaces of the same type is given by:
+
+    \[ \mu = \frac{\tau_s}{H} \]
+
+    Where $\tau_s$ is the shear stress on the oxide layer, and $H$ is the metal's hardness.
+\end{theorem}
+
+\begin{definition}[Abrasive contact]
+    Abrasive contact occurs when two surfaces of very different hardness are brought into contact with each other. The asperities of the harder material will essentially penetrate the soft one.
+\end{definition}
+
+\begin{definition}[Wear]
+    The wear rate $Q$ is defined as:
+
+    \[ Q = \frac{\text{Volume of material removed from contact surface}}{\text{Sliding distance}} \]
+
+    This is therefore proportional to the true area of contact. Since $W = HA_t \iff A_t = \frac{W}{H}$. Therefore:
+
+    \[ Q = K\frac{W}{H} \]
+
+    Where $K$ is the wear coefficient which depends on how the material is pulled off at the asperity contacts.
+\end{definition}
 
 \end{document}

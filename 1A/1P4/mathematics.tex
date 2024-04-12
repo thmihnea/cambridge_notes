@@ -2291,4 +2291,40 @@ We can utilize the same concept for functions, since the set of continuous funct
 
 Note that if a function can be written as a linear combination of sine and cosine functions, then its Fourier series representation is equal to the function itself (written in terms of linear combinations of sines and cosines).
 
+\begin{theorem}[Generalising for any period]
+    Let $f : \mathbb{R} \to \mathbb{R}$ be a periodic function of period $T \in \mathbb{R}$. Hence, its Fourier coefficients are given by:
+
+    \[ a_n = \frac{2}{T}\int_0^T f(t)\cos{\frac{2\pi nt}{T}}dt \]
+    \[ b_n = \frac{2}{T}\int_0^T f(t)\sin{\frac{2\pi nt}{T}}dt \]
+    \[ d = \frac{1}{T}\int_0^T f(t)dt \]
+\end{theorem}
+
+Note that sometimes, in the case where the function's second derivative can be expressed in terms of Dirac-$\delta$ functions only, it is a good idea to differentiate the initial function twice, obtain the Fourier series for $f''(x)$, and the integrate it twice, making sure to set the constant of integration to zero.
+
+\subsection{Complex Fourier series}
+    
+Using Euler's identity, one can deduce that the real Fourier series of a function $f(x)$ can be re-written as:
+
+\[ f(x) = \sum_{n = -\infty}^\infty c_ne^{int} \]
+
+Where the coefficients are given by:
+
+\[ c_n = \begin{cases}
+    d, n = 0 \\
+    a_n - ib_n, n > 0 \\
+    a_{-n} + ib_{-n}, n < 0
+\end{cases} \]
+
+\begin{theorem}[Complex Fourier series]
+    Let $f : \mathbb{R} \to \mathbb{R}$ be a periodic function with period $T \in \mathbb{R}$. Then, its complex Fourier series coefficients are given by:
+
+    \[ c_n = \frac{1}{T}\int_0^T e^{-i\frac{2n\pi t}{T}}dt \]
+\end{theorem}
+
+Likewise, we can easily convert to a real series using:
+
+\[ a_n = 2\mathfrak{Re}(c_n) \]
+\[ b_n = -2\mathfrak{Im}(c_n) \]
+
+
 \end{document}
